@@ -19,7 +19,7 @@ Please go [here](http://creativecommons.org/licenses/by-sa/3.0/) for details.
 ## User Guidance
 
 #### Software
-Model validated with [STELLA 10.0.6](http://www.iseesystems.com/softwares/Education/StellaSoftware.aspx). Model coverted to [STELLA Architect 1.5.2](https://www.iseesystems.com/store/products/stella-architect.aspx) for compatibility with current STELLA versions.
+Model validated with [STELLA 10.0.6](http://www.iseesystems.com/softwares/Education/StellaSoftware.aspx). Model coverted to [STELLA Pro-Architect 1.6](https://www.iseesystems.com/store/products/stella-professional.aspx) for compatibility with current STELLA versions.
 See [ISEE Systems](http://www.iseesystems.com) for documentation and training related to the STELLA software.
 
 ##### Trial Version Will Allow:
