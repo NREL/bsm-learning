@@ -1,0 +1,5685 @@
+This document includes the variables and equations of the Biomass Scenario Leanring Model (https://github.com/NREL/bsm-learning).
+Additional information on the model, including descriptions of the primary equations, can be found at https://www.nrel.gov/docs/fy15osti/60984.pdf.
+
+
+Stella Simulator version 1.5.2, Copyright (C) 2017 by isee systems, inc.
+Total Number of Variables: 390
+Total Number of Stocks: 36
+
+Variables:
+actual fs consn: Converter
+   = actual_fs_demand_at_nominal_utilization[TechnologyPlatform]
+   Units: million-ton/yr
+   Documentation: DEFINITION: actual consumption of feedstock for this set of technologies
+ 
+UNITS: tons/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: This is a connecting point to feedstock production for a more fully fleshed out supply chain.
+   Used by: Feedstock Constraint on Utilization
+
+actual fs demand at nominal utilization: Converter
+   = Total_Annual_Req'd_Cellulosic_FS[TechnologyPlatform]
+   Units: million-ton/yr
+   Documentation: DEFINITION: required cellulosic feedstock per yr by region to support in place prod'n capacity --rolled up across technologies
+
+UNITS: million tons/year
+ 
+TYPE: sector/module interface
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Feedstock Constraint on Utilization, fs demand incl pipeline, actual fs consn
+
+Actual Output gpy C: Converter
+   = Output_Capacity_C[TechnologyPlatform]*Plant_Utilization_Factors_C[TechnologyPlatform]
+   Units: GPY
+   Documentation: DEFINITION:  Applies current utilization factors to output capacity in order to calculate actual output  by technology for full commercial scale operations
+
+UNITS:  GPY (gallons per year)
+
+TYPE:  Sector Interface
+
+SOURCE:  N/A
+
+
+COMMENTS:
+   Used by: Output gpy by Technology, C industry FS thruput tpy, UTIL by tech C
+
+Actual Output gpy P: Converter
+   = Output_Capacity_P[TechnologyPlatform]*Plant_Utilization_Factors_P[TechnologyPlatform]
+   Units: GPY
+   Documentation: DEFINITION:  Applies current utilization factors to output capacity in order to calculate actual output  by technology
+
+UNITS:  GPY (gallons per year)
+
+TYPE:  Sector Interface
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: Output gpy by Technology, P industry FS thruput tpy, UTIL by tech P
+
+Annual Loan Payment C: Converter
+   = Loan_Principal_C[TechnologyPlatform]/discount_factor_Loan_Payment_C[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Annual payment associated with repayment of loan for commercial-scale project
+
+UNTIS:  USD per year
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: Cume Loan Payment C, PV Loan Payment C
+
+Annual Loan Payment P: Converter
+   = Loan_Principal_P[TechnologyPlatform]/discount_factor_Loan_Payment_P[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Annual payment associated with repayment of loan 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: Cume Loan Payment P, PV Loan Payment P
+
+attr OTHER: Converter
+   = EXP(k_OTHER+invest_attractiveness_weighting*NPV_rel_to_a_million_OTHER)
+   Units: Unitless
+   Documentation: DEFINITION: calculation of attractiveness of other uses of plant construction capacity
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: share OTHER, Total Attr
+
+attractiveness C: Converter
+   = nominal_attractiveness_C[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: attractiveness of investment in conmmercial scale plants by technology
+
+UNITS: attractiveness units
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Total Attr C, RAT C
+
+attractiveness P: Converter
+   = nominal_attractiveness_P[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: attractiveness of investment in pioneer scale plants by technology
+
+UNITS: attractiveness units
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Total Attr P, RAT P
+
+Avg Plant Output gal per day P: Converter
+   = FS_throughput_P[TechnologyPlatform] * Avg_PY_P[TechnologyPlatform]
+   Units: GPD
+   Documentation: DEFINITION:  Calculates (per plant) pioneer scale average output per day under full utilization, by technology
+
+UNITS:  GPD (gallons per day)
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+
+   Used by: Avg Plant Output gal per yr P
+
+Avg Plant Output gal per yr P: Converter
+   = Avg_Plant_Output_gal_per_day_P[TechnologyPlatform]*Days_per_Year_Online
+   Units: GPY
+   Documentation: DEFINITION:  Calculates (per plant) pioneer scale average output per year under full utilization, by technology 
+
+UNITS:  GPY (gallons per year)
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+   Used by: Output Capacity P, Other rev net of vbl cost per gal P
+
+Avg Plant Output gal\day C: Converter
+   = FS_throughput_C[TechnologyPlatform]*
+Avg_PY_C[TechnologyPlatform]
+   Units: GPD
+   Documentation: DEFINITION:  Calculates (per plant) full commercial scale average output per day under full utilization, by technology
+UNITS:  GPD (gallons per day)
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+   Used by: Avg Plant Output gal\yr C
+
+Avg Plant Output gal\yr C: Converter
+   = "Avg_Plant_Output_gal\\day_C"[TechnologyPlatform]* (Days_per_Year_Online)
+   Units: GPY
+   Documentation: DEFINITION:  Calculates (per plant) full commercial scale average output per year under full utilization, by technology 
+
+UNITS:  GPY (gallons per year)
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+   Used by: Output Capacity C, Other rev net of vbl cost per gal C
+
+Avg Plant Output gpd pipeline C: Converter
+   = FS_throughput_C[TechnologyPlatform] * 
+Avg_PY_Pipeline_C[TechnologyPlatform]
+   Units: GPD
+   Documentation: DEFINITION: commercial-scale per-plant potential output per day by technology by region--for what's in the pipeline 
+ 
+UNITS: GPD
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+   Used by: Pipeline Potential Plant Output gal per yr C
+
+Avg Plant Output gpd pipeline P: Converter
+   = FS_throughput_P[TechnologyPlatform]*
+Avg_PY_Pipeline_P[TechnologyPlatform]
+   Units: GPD
+   Documentation: DEFINITION: pioneer-scale per-plant potential output per day by technology --for what's in the pipeline
+ 
+UNITS: GPD
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+   Used by: Pipeline Potential Plant Output gal\yr P
+
+Avg PY C: Converter
+   = IF OnLine_C[TechnologyPlatform] >0 
+THEN PY_OnLine_C[TechnologyPlatform]/OnLine_C[TechnologyPlatform]
+ELSE 0
+   Units: gal per ton
+   Documentation: DEFINITION:  Tracks the average process yield of full commercial scale plants on line.  Tracking is done by technology
+
+UNITS: gal per ton
+
+TYPE:  Sector Interface
+
+SOURCE:  N/A
+
+COMMENTS:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+   Used by: C industry FS thruput tpy, Avg Plant Output gal\day C, PY retirements C, Industry Process Yield Gap, Feedstock Cost USD per gal C, Reqd Annual FS Supply C
+
+Avg PY D&C C: Converter
+   = IF "In_Design&Cons_C"[TechnologyPlatform] >0 
+THEN "PY_in_In_Design&Cons_C"[TechnologyPlatform]/"In_Design&Cons_C"[TechnologyPlatform]
+ELSE 0
+   Units: gal per ton
+   Documentation: DEFINITION:  Tracks average (prospective)  process yield associated with plants that are in design and construction phase.  Used as part of co-flow structure.
+
+UNITS:  gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  IF THEN ELSE construct prevents division by zero when no plants in design and construction
+
+   Used by: PY D&C to Startup C
+
+Avg PY D&C P: Converter
+   = IF "In_Design&Cons_P"[TechnologyPlatform] >0 
+THEN "PY_in_Design&Cons_P"[TechnologyPlatform]/"In_Design&Cons_P"[TechnologyPlatform]
+ELSE 0
+   Units: gal per ton
+   Documentation: DEFINITION:  Tracks average (prospective)  process yield associated with plants that are in design and construction phase.  Used as part of co-flow structure.
+
+UNITS:  gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  IF THEN ELSE construct prevents division by zero when no plants in design and construction
+
+   Used by: PY D&C to Startup P
+
+Avg PY P: Converter
+   = IF OnLine_P[TechnologyPlatform] >0 
+THEN PY_OnLine_P[TechnologyPlatform]/OnLine_P[TechnologyPlatform]
+ELSE 0
+   Units: gal per ton
+   Documentation: DEFINITION:  Tracks the average process yield of pioneer scale plants on line.  Tracking is done by technology
+
+UNITS: gal per ton
+
+TYPE:  Sector Interface
+
+SOURCE:  N/A
+
+COMMENTS:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+   Used by: PY retirements P, P industry FS thruput tpy, Avg Plant Output gal per day P, Feedstock Cost USD per gal P, Reqd Annual FS Supply P
+
+Avg PY Pipeline C: Converter
+   = IF Pipeline_C[TechnologyPlatform] >0 
+THEN PY_Pipeline_C[TechnologyPlatform] / Pipeline_C[TechnologyPlatform]
+ELSE 0
+   Units: gal per ton
+   Documentation: DEFINITION: Tracks the average process yield associated with commercial plants in the pipeline
+ 
+UNITS: (gal/ton)
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: IF THEN ELSE construct prevents division by zero when no plants in industry
+   Used by: Avg Plant Output gpd pipeline C
+
+Avg PY Pipeline P: Converter
+   = IF Pipeline_P[TechnologyPlatform] > 0 
+THEN PY_Pipeline_P[TechnologyPlatform] / Pipeline_P[TechnologyPlatform]
+ELSE 0
+   Units: gal per ton
+   Documentation: DEFINITION: Tracks the average process yield associated with pioneer plants in the pipeline
+ 
+UNITS: gal per ton
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: IF THEN ELSE construct prevents division by zero when no plants in industry
+   Used by: Avg Plant Output gpd pipeline P
+
+Background Subs: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION: Arrayed set of Baseline or Background subiidies, accruing to producers as long as switch is on and we are within the start/end time constraints
+
+UNITS: Varies (units are left as unspecified in this vbl):
+
+TYPE: Input
+
+SOURCE: n/a
+
+Comments:  Note that there are multiple concepts represented in this array.  Units are set to unitless--inplying a dimensionless multiplier.  Specific units are developed in the Subs Logic equations.
+
+[0.15 ,
+0, 
+0, 
+0.6,
+0,
+0.7,
+0.7]
+   Used by: Subsidy Amt
+
+base Gasoline POD price before tax scenarios: Converter
+   = TIME
+   Units: USD per gallon
+   Documentation: DEFINITION: Nominal price/gallon for gasoline equivalent at point of dist'n before taxes
+ 
+UNITS: $/gal
+ 
+TYPE: scenario inputs
+ 
+SOURCE:  EIA, team-defined, and user-input
+ 
+COMMENTS: 
+   Used by: Gasoline POD price before tax scenarios
+
+breakthru frac: Converter
+   = 0.5
+   Units: Unitless
+   Documentation: Definition: Sets fraction of commercial maturity gap that is eliminated by "tech breakthrough"
+
+Units: Unitless
+
+Type:  User Defined Input
+
+Source:  N/A
+
+Comments:  Placed in model for testing purposes
+
+   Used by: tech breakthru logic
+
+breakthru switch: Converter
+   = 0
+   Units: Unitless
+   Documentation: Definition:   Switch that activates "tech breakthrough" logic. Set to 1 to activate tach breakthru.
+
+Units:   Unitless
+
+Type:  User Defined Input
+
+Source:  N/A
+
+Comments:  Placed in model for testing purposes
+
+   Used by: tech breakthru logic
+
+breakthru time: Converter
+   = 2012
+   Units: years
+   Documentation: Definition:   time to activate "tech breakthrough" logic.
+
+Units:   years
+
+Type:  User Defined Input
+
+Source:  N/A
+
+Comments:  Placed in model for testing purposes
+
+   Used by: tech breakthru logic
+
+C industry FS thruput tpy: Converter
+   = IF Avg_PY_C[TechnologyPlatform] >0 
+THEN  Actual_Output_gpy_C[TechnologyPlatform]/Avg_PY_C[TechnologyPlatform]
+ELSE 0
+   Units: ton per year
+   Documentation:  DEFINITION:  flow of annual feedstock consumption by full commercial scale conversion facilities, by technology
+ 
+UNITS: ton/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: yrly fs subs C
+
+c plant planning logic: Flow
+   = use_exogenous_commercial_scenario[TechnologyPlatform] * commercial_start[TechnologyPlatform] + 
+use_endogenous_commercial_logic[TechnologyPlatform] * desired_c_starts_per_year[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION: Captures continuous pressure to add plants to the system
+ 
+UNITS: projects/year
+
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: part of structure that takes continuous pressure to add plants and transforms into discrete trigger to add a plant.
+ 
+
+Commercial Maturity: Stock
+   = Initial_Indices_of_Commercial_Maturity[TechnologyPlatform]
+   Units: Unitless
+   Documentation: Definition:  Stock tracks level of maturity of commercial scale operations (including Pioneer-scale and Full Commercial scale), by technology
+
+Units:   Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: commercial maturity gap, State of the Industry Multipliers
+
+commercial maturity gap: Converter
+   = one-Commercial_Maturity[TechnologyPlatform]
+   Units: Unitless
+   Documentation: Definition: Difference between maximum maturity (1) and actual maturity at commercial scale operations
+
+Units: Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: learning logic, tech breakthru logic
+
+commercial plant initiation logic: Flow
+   = PULSE(number_of_plants_to_start[TechnologyPlatform])
+   Units: project/yr
+   Documentation: DEFINITION: pulses out integer value from batchifier whenever value in batchifier is >=1
+ 
+UNITS: projects/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: Note that PULSE fires each DT.   Specific amount fired depends on batchifier.
+
+
+
+   Used by: yrly Loan guarantee flux C, initiating C, yrly FCI subs C
+
+Commercial Progress Ratios: Converter
+   = 
+   Units: 1/doubling
+   Documentation: DEFINITION:  Roughly, the fraction of potential change in demo maturity that is REMAINING with each doubling of cumulative industry output.  1- progress ratio tells the rate of gap-elimination accompanying each doubling of output or experience.  Drives level of maturity of demo effort, by industry
+
+UNITS: 1/doubling
+
+TYPE:  ass'n
+
+   Used by: learning logic
+
+commercial start: Converter
+   = TIME
+   Units: project/yr
+   Documentation: DEFINITION: Logic that drives exogenously specified commercial scale plant scenario into the system
+ 
+UNITS: projects/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: c plant planning logic
+
+Completed Demo Scale Ops: Stock
+   = 
+   Units: Project
+   Documentation: Definition: The accumulation, by technology, of demonstration scale operations that have "run their course" an have been taken offline
+
+Units: Projects
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+Completed Pilot Ops: Stock
+   = 0
+   Units: Project
+   Documentation: Definition: The accumulation, by technology, of pilot scale operations that have "run their course" an have been taken offline
+
+Units: Projects
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+completing D&C C: Flow
+   = 0
+   Units: project/yr
+   Documentation: DEFINITION:  (Discretized) flow that captures completion of design/construction phase of full commercial scale project
+
+UNITS:  Projects per Year
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Unit check within flow dialog does analysis on transit time.
+
+   Used by: PY D&C to Startup C
+
+completing D&C P: Flow
+   = 0
+   Units: project/yr
+   Documentation: DEFINITION:  (Discretized) flow that captures completion of design/construction phase of pioneer-scale project
+
+UNITS:  Projects per Year
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  
+
+   Used by: PY D&C to Startup P
+
+completing demo development: Flow
+   = 0
+   Units: project/yr
+   Documentation: Definition:  Flow representing the completion of demonstration scale development and commencement of pilot scale operations
+
+Units: Projects/yr
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+completing demo scale ops: Flow
+   = 0
+   Units: project/yr
+   Documentation: Definition: Flow represents the completion of demonstration scale operations and the taking offline of demo plants
+
+Units: Projects/yr
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+completing pilot development: Flow
+   = 0
+   Units: project/yr
+   Documentation: Definition:  Flow representing the completion of pilot-scale development and commencement of pilot scale operations
+
+Units: Projects/yr
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+completing pilot ops: Flow
+   = 0
+   Units: project/yr
+   Documentation: Definition: Flow represents the completion of pilot scale operations and the taking offline of pilot plants
+
+Units: Projects/yr
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+completing startup C: Flow
+   = 0
+   Units: project/yr
+   Documentation: DEFINITION:  (Discretized) flow that captures (successful) completion of start-up period for full commercial-scale developments
+
+UNITS: Projects per Year
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+completing startup P: Flow
+   = 0
+   Units: project/yr
+   Documentation:  PDEFINITION:  (Discretized) flow that captures (successful) completion of start-up period for pioneer-scale developments
+
+UNITS: Projects per Year
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+Cost to Price Ratio C: Converter
+   = (Feedstock_Cost_USD_per_gal_C[TechnologyPlatform]-Other_rev_net_of_vbl_cost_per_gal_C[TechnologyPlatform])/(Expected_Price_after_Subs[TechnologyPlatform])
+   Units: Unitless
+   Documentation: DEFINITION: calculates output price relative to cost of producing that output (vbl cost only!) for commercial scale facilities
+ 
+UNITS: unitless
+ 
+TYPE: module/sector interface
+ 
+SOURCE: 
+ 
+COMMENTS: drives utilization of plants; also used in feedstock module.
+   Used by: Nominal Plant Utilization Factors C
+
+Cost to Price Ratio P: Converter
+   = (Feedstock_Cost_USD_per_gal_P[TechnologyPlatform]-Other_rev_net_of_vbl_cost_per_gal_P[TechnologyPlatform])/Expected_Price_after_Subs[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: calculates output price relative to cost of producing that output (vbl cost only!)
+ 
+UNITS: unitless
+ 
+TYPE: module/sector interface
+ 
+SOURCE: 
+ 
+COMMENTS: drives utilization of plants; also used in feedstock module.
+   Used by: Nominal Plant Utilization Factors P
+
+Cume FCI Subs: Converter
+   = Cume_FCI_Subs_C[TechnologyPlatform] + Cume_FCI_Subs_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation:  DEFINITION:  Calculates cumulative fixed capital investment subsidy associated with investment in conversion (both pioneer and full commercial scale) facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup cumulative subsidies
+
+Cume FCI Subs C: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates fixed capital investment subsidy accruing to full commercial scale conversion facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Cume FCI Subs
+
+Cume FCI Subs P: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates fixed capital investment subsidy accruing to pioneer conversion facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Cume FCI Subs
+
+Cume FS Subs: Converter
+   = Cume_FS_Subs_C[TechnologyPlatform] + Cume_FS_Subs_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation:  DEFINITION:  Calculates cumulative feedstock subsidy accruing to  conversion (both pioneer and full commercial scale) facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup cumulative subsidies
+
+Cume FS Subs C: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates feedstock subsidy accruing to full commercial scale conversion facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Cume FS Subs
+
+Cume FS Subs P: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates feedstock subsidy accruing to pioneer conversion facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Cume FS Subs
+
+Cume Interest Payment C: Converter
+   = Cume_Loan_Payment_C[TechnologyPlatform]-Loan_Principal_C[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Cumulative interest paid over life of loan 
+
+UNITS:  US Dollars
+
+TYPE: internal calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: Rough Estimate Annual Interest
+
+Cume Interest Payment P: Converter
+   = Cume_Loan_Payment_P[TechnologyPlatform]-Loan_Principal_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Cumulative interest paid over life of loan
+
+UNITS:  US Dollars
+
+TYPE: internal calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: Rough Estimate Annual Interest P
+
+Cume Loan Guarantee Exposure: Converter
+   = Cume_Loan_Guarantee_Exposure_C[TechnologyPlatform] + Cume_Loan_Guarantee_Exposure_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation:  DEFINITION:  Calculates cumulative loan guarantee exposure associated with investment in conversion (both pioneer and full commercial scale) facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Rollup Loan Expsure
+
+Cume Loan Guarantee Exposure C: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates cumulative loan guarantee exposure associated with investment in  full commercial scale conversion facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Cume Loan Guarantee Exposure
+
+Cume Loan Guarantee Exposure P: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates cumulative loan guarantee exposure associated with investment in pioneer scale conversion facilities, by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Cume Loan Guarantee Exposure
+
+Cume Loan Payment C: Converter
+   = Annual_Loan_Payment_C[TechnologyPlatform]*term_of_loan
+   Units: US Dollars
+   Documentation: DEFINITION: Cumulative interest + principal repaid over term of loan
+
+UNITS:  US Dollars
+
+TYPE: internal calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: Cume Interest Payment C, per plant L G exposure C
+
+Cume Loan Payment P: Converter
+   = Annual_Loan_Payment_P[TechnologyPlatform]*term_of_loan
+   Units: US Dollars
+   Documentation: DEFINITION: Cumulative interest + principal repaid over term of loan
+
+UNITS:  US Dollars
+
+TYPE: internal calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: per plant L G esposure P, Cume Interest Payment P
+
+Cume Prodn Subs: Stock
+   = 0
+   Units: US Dollars
+   Documentation:  DEFINITION:  Accumulates conversion production subsidy by technology
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup cumulative subsidies
+
+Cumulative Demo Experience: Stock
+   = 
+   Units: years
+   Documentation: Definition:  Cumulative number of years that demo plants have been in operation, by technology
+
+Units:  Years
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:
+
+   Used by: frac rate of growth demo experience
+
+Cumulative Industry Output: Stock
+   = 
+   Units: billions-gal
+   Documentation: Definition:   Cumulative product output, by technology, over the course of the simulation
+
+Units:  billions-gal (gal * 1e9)
+
+Type:  Internal calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: frac rate of growth in industry output, Cumulative Module Output
+
+Cumulative Module Output: Converter
+   = SUM(Cumulative_Industry_Output)
+   Units: billions-gal
+   Documentation: Definition:   Cumulative product output, rolled up across technology, over the course of the simulation
+
+Units:  billions-gal (gal * 1e9)
+
+Type:  Internal calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: Use Startup Subs
+
+Cumulative Pilot Experience: Stock
+   = 
+   Units: years
+   Documentation: Definition:  Cumulative number of years that pilot plants have been in operation, by technology
+
+Units:  Years
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments: 
+
+
+ 
+   Used by: frac rate of growth pilot experience
+
+Days per Year Online: Converter
+   = 350
+   Units: day/yr
+   Documentation: DEFINITION:  Expected days/yr that plant is online 
+
+UNITS:  days/yr
+
+TYPE:  Constant
+
+SOURCE:  
+
+COMMENT:  this is for normal plant utilization.  Utilization factors (driven by supply/demand considerations) handled elsewhere
+
+   Used by: Avg Plant Output gal\yr C, Expected Pioneer Plant Output, Expected Plant Output C, Avg Plant Output gal per yr P, Reqd FS supply Pipeline C, Reqd FS supply Pipeline P, Pipeline Potential Plant Output gal\yr P, Pipeline Potential Plant Output gal per yr C
+
+debt interest rate as frac: Converter
+   = Debt_Interest_Rate_as_Pct/"one_hundred_%"
+   Units: Per Year
+   Documentation: DEFINITION: Interest rate for debt financing, expressed as fraction/year 
+
+UNITS:  1/yr
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: discount factor Loan Payment C, discount factor Loan Payment P
+
+Debt Interest Rate as Pct: Converter
+   = 8
+   Units: percent/yr
+   Documentation: DEFINITION: Interest rate for debt financing 
+
+Units:  ( %/yr )
+
+TYPE: Constant/scenario
+
+SOURCE: assumption
+
+COMMENT: 
+
+   Used by: debt interest rate as frac
+
+demo dev time: Converter
+   = 1.5
+   Units: years
+   Documentation: DEFINITION: Dwell time between initiation and completion of demo-scale development effort
+ 
+UNITS: yr
+ 
+TYPE: ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: 
+
+demo learning logic: Flow
+   = rate_of_doubling_demo_experience[TechnologyPlatform]*demo_maturity_gap[TechnologyPlatform]*(1-Demo_Progress_Ratios[TechnologyPlatform] * ProgRatio_Multiplier) 
+
+
+
+
+{Note:  Unit checking in STELLA 10.0.6 fails to impute correct units, apparently to the to value "1" in this calculation: 
+1/yr = doubling/yr * 1/doubling * unitless }
+   Units: Per Year
+   Documentation: Definition:  Learning curve logic calculates flow that increases demo-scale maturity.  Applies  quantity (1-progress ratio) to maturity gap and rate of doubling, to generate increase in maturity.  Each doubling of cumulative output drives a constant percentage change in the gap between "current" and mature index of maturity.
+
+Units: 1/yr
+
+Type:  Internal Calculation
+
+Source N/A
+
+Comments:  STELLA 10.0.6 fails to successfully parse units for this flow, likely the result of the existence of the quantity (1-progress ratio) in the equation.
+
+
+Demo Maturity: Stock
+   = Initial_Indices_of_Demo_Maturity[TechnologyPlatform] * Initial_Pilot_Demo_Maturity_Multiplier
+   Units: Unitless
+   Documentation: Definition:  Stock tracks level of maturity of demo scale operations, by technology
+
+Units:   Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: demo maturity gap, Demo Multipliers
+
+demo maturity gap: Converter
+   = one-Demo_Maturity[TechnologyPlatform]
+   Units: Unitless
+   Documentation: Definition: Difference between maximum maturity (1) and actual maturity at demo scale operations
+
+Units: Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: demo learning logic
+
+Demo Multipliers: Converter
+   = Mature_Demo_Multipliers[TechAttribute]*Demo_Maturity[TechnologyPlatform] +
+Pilot_Multipliers[TechnologyPlatform,TechAttribute]*(1-Demo_Maturity[TechnologyPlatform])
+   Units: Unitless
+   Documentation: Definition: Translates demo-scale maturity into a set of multipliers that characterize the "current" state of technology from the perspective of piloting AND demoing.  Captured as weighted average, with weighting factor dynamically determined by indices of demo maturity.  After winding through multiple learning curves, resultant multiplier is applied to mature industry values to define attributes of each technology.
+
+Units: Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: State of the Industry Multipliers
+
+demo op time: Converter
+   = 3
+   Units: years
+   Documentation: DEFINITION: Time that demo-scale development effort spends "on line"
+ 
+UNITS: yr
+ 
+TYPE: ass'n--ingoing ass'n is 2x development time
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: 
+
+Demo Progress Ratios: Converter
+   = 
+   Units: 1/doubling
+   Documentation: DEFINITION:  Roughly, the fraction of potential change in demo maturity that is REMAINING with each doubling of cumulative demo experience.  1- progress ration tells the rate of gap-elimination accompanying each doubling of output or experience.  Drives level of maturity of demo effort, by industry
+
+UNITS: 1/doubling
+
+TYPE:  Scenario ass'n
+
+SOURCE:  
+
+   Used by: demo learning logic
+
+Demo Projects in Development: Stock
+   = 
+   Units: Project
+   Documentation: Definition: Conveyor representing demonstration projects that have begun but not completed development
+
+Units: Projects
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+Demo Scale Operations: Stock
+   = 
+   Units: Project
+   Documentation: Definition: Represents the number of demonstration scale operations that are "on line" and generating learning.
+
+Units: Projects
+
+Type:  Internal calculation
+
+Source:  n/a
+
+Comments:  
+
+   Used by: logging demo experience
+
+demo start: Converter
+   = TIME
+   Units: project/yr
+   Documentation: Definition: Scenario input driving initiation of demonstration-scale operations
+
+Units: Projects per year
+
+Type:  User-Defined Input
+
+Source:  n/a
+
+Comments:  Note use of discontinuous line segments in graphical function
+
+
+   Used by: initiating demo development
+
+depreciation period: Converter
+   = 7
+   Units: years
+   Documentation: DEFINITION:  Depreciation period for capital equipment
+
+UNITS:  yr
+
+TYPE:  Scenario
+
+SOURCE:  assumption
+
+COMMENT:  In this model we use straight line depreciation to get rough estimate of depreciation expense
+
+   Used by: est depreciation expense C, Expected Taxable Income 2 C, length of period 1 C, length of period 2 C, estimated depreciation expense pioneer, length of period 1 P, length of period 2 P, Expected Taxable Income 2 P
+
+desired c starts per year: Converter
+   = Max_Plant_Construction_Capacity*share_to_C[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION: Calculates total "desired" new plants per year by technologies by regions
+ 
+UNITS: plant/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: This formulation enables industry construction capacity to be allocated more or less rationally across all potential uses 
+   Used by: c plant planning logic
+
+desired p starts per yr: Converter
+   = Max_Plant_Construction_Capacity*share_to_P[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION: Calculates total "desired" new plants per year by technologies by region
+ 
+UNITS: plant/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: This formulation enables industry construction capacity to be allocated more or less rationally across all potential uses 
+   Used by: pioneer plant planning logic
+
+discount factor 1 C: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^length_of_period_1_C[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for portion of commercial project lifetime up to end of depreciation period OR end of loan term, whichever is SMALLER.  
+
+UNITS:  years
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+   Used by: NPV Taxes 1 C, NPV Taxes 2 C
+
+discount factor 1 P: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^length_of_period_1_P[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for portion of project lifetime up to end of depreciation period OR end of loan term, whichever is SMALLER.  
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+Units check fails because of exponentiation operation
+   Used by: NPV Taxes 1 P, NPV Taxes 2 P
+
+discount factor 2 C: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^length_of_period_2_C[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for portion of commercial-scale project lifetime up to end of depreciation period OR end of loan term, whichever is LARGER. 
+
+UNITS:  years
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.  
+
+
+   Used by: NPV Taxes 2 C, NPV Taxes 3 C
+
+discount factor 2 P: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^length_of_period_2_P[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for portion of project lifetime up to end of depreciation period OR end of loan term, whichever is LARGER. 
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+   Used by: NPV Taxes 3 P, NPV Taxes 2 P
+
+discount factor 3 C: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^total_project_length_C[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for total commercial project length, incl. design, construction, startup, project lifetime. 
+
+UNITS:  years
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+
+   Used by: NPV Revs Net of Op Cost C, NPV Taxes 3 C
+
+discount factor 3 P: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^total_project_length_P[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for total project length, incl. design, construction, startup, project lifetime. 
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+
+   Used by: NPV Revs Net of Op Cost P, NPV Taxes 3 P
+
+discount factor DCS C: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^years_in_D_C_S_C[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for the period of design, construction, startup, for commercial-scale plants
+
+UNITS:  years
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+   Used by: NPV Revs Net of Op Cost C, NPV Taxes 1 C, PV Loan Payment C
+
+discount factor DCS P: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^years_in_D_C_S_P[TechnologyPlatform])
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation for the period of design, construction, startup. 
+
+UNITS:  years
+
+TYPE:  Internal Calculation
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+
+   Used by: NPV Revs Net of Op Cost P, NPV Taxes 1 P, PV Loan Payment P
+
+discount factor loan C: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^(term_of_loan+years_in_D_C_S_C[TechnologyPlatform]))
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation associated with loan repayment (principal + interest) 
+
+UNITS:  years
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.
+
+
+   Used by: PV Loan Payment C
+
+discount factor loan P: Converter
+   = (1/Req'd_Rate_of_Return[TechnologyPlatform])*
+(1-1/(1+Req'd_Rate_of_Return[TechnologyPlatform])^(term_of_loan+years_in_D_C_S_P[TechnologyPlatform]))
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for doing NPV calculation associated with loan repayment (principal + interest) 
+
+UNITS:  years
+
+TYPE:  Internal Calculation
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Req'd Rate of Return >0 or eq'n will generate division by 0.  Note also that this is different than the discount factor used to calculate the annual loan payment.
+
+
+   Used by: PV Loan Payment P
+
+discount factor Loan Payment C: Converter
+   = (1/debt_interest_rate_as_frac)*
+(1-1/(1+debt_interest_rate_as_frac)^term_of_loan)
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for calculating loan repayment amount (principal + interest) for commercial-scale project
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Note that this discount factor is based on loan interest rate and therefore is different than discount factor that would apply to calculation of NPV of project.
+
+
+   Used by: Annual Loan Payment C
+
+discount factor Loan Payment P: Converter
+   = (1/debt_interest_rate_as_frac)*
+(1-1/(1+debt_interest_rate_as_frac)^term_of_loan)
+   Units: years
+   Documentation: DEFINITION:  Calculates discount factor for calculating loan repayment amount (principal + interest) 
+
+UNITS:   yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  Standard financial calculation for annuity.  See, for example, Present Value entry in wikipedia
+
+COMMENT:  Note that this discount factor is based on loan interest rate and therefore is different than discount factor that would apply to calculation of NPV of project.
+
+
+   Used by: Annual Loan Payment P
+
+Doubling: Converter
+   = 1
+   Units: doubling
+   Documentation: DEFINITION: one doubling
+ 
+UNITS: doubling
+ 
+TYPE: constant
+ 
+SOURCE: 
+ 
+COMMENTS: used to calculate doubling factor for learning curves
+   Used by: doubling factor
+
+doubling factor: Converter
+   = LN(2)/Doubling
+   Units: 1/doubling
+   Documentation: DEFINITION: factor that translates growth rate into doubling time or doubling rate
+ 
+UNITS: 1/doubling
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: rate of doubling industry output by technology, rate of doubling pilot experience, rate of doubling demo experience
+
+Early Pilot Multipliers: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION:  Tells what fraction of different technology attributes is realized at the initial stage of pilot effort
+
+UNITS:  Dimensionless fraction
+
+TYPE:  Ass'n-
+
+SOURCE:  
+
+COMMENT: After winding through multiple learning curves, resultant multiplier is applied to mature industry values to define attributes of each technology.
+   Used by: Pilot Multipliers
+
+Equity Fraction C: Converter
+   = MIN(Expected_Equity_Fraction[TechnologyPlatform],1-Loan_Guarantee_Logic_C[TechnologyPlatform])
+   Units: Unitless
+   Documentation: DEFINITION: Fraction of Investment to be funded through equity financing for commercial-scale plants.
+
+UNITS:  Unitless
+
+TYPE: Internal calculation
+
+SOURCE: Ass'n
+
+COMMENT: Calculated as min of what's implied by policy or by industry state of evolution.
+
+   Used by: Initial Equity Investment C, Frac Plant Debt Financed C
+
+Equity Fraction P: Converter
+   = MIN(Expected_Equity_Fraction[TechnologyPlatform],1-Loan_Guarantee_Logic_P[TechnologyPlatform])
+   Units: Unitless
+   Documentation: DEFINITION: Expected fraction of Investment to be funded through equity financing for pioneer plants, after loan guarantees have been applied.
+
+UNITS:  Unitless
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: 
+
+COMMENT: Calculated as min of what's implied by policy or by industry state of evolution.
+   Used by: Initial Equity Investment p, Frac Plant Debt Financed P
+
+est depreciation expense C: Converter
+   = Expected_FCI_after_subs_C[TechnologyPlatform]/depreciation_period
+   Units: US dollars per year
+   Documentation: DEFINITION: Depreciation expense of capital ( $/yr )
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: Assume straight-line depreciation--simplification to facilitate use of annuity calculations to capture NPV for project
+
+   Used by: Expected Taxable Income 2 C, Expected Taxable Income 1 C
+
+estimated depreciation expense pioneer: Converter
+   = Expected_FCI_after_subs_P[TechnologyPlatform]/depreciation_period
+   Units: US dollars per year
+   Documentation: DEFINITION: Depreciation expense of capital for pioneer-scale plant
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: Assume straight-line depreciation--simplification to facilitate use of annuity calculations to capture NPV for project
+
+   Used by: Expected Taxable Income 2 P, Expected Taxable Income 1 P
+
+Exp Other Coproduct Sales Rev C: Converter
+   = 
+   Units: US dollars per year
+   Documentation: DEFINITION: Expected  revenues from other coproducts from mature commercial-scale plant
+
+UNITS:  $/yr
+
+TYPE: Constant/Scenario
+
+SOURCE: In real world one can look at engineering design studies to estimate this value.
+
+COMMENT: Downstream NPV calculation assumes constant revs over plant lifetime, once operational. .  
+   Used by: Total Exp Revs C, Expected Other Coproduct Sales Rev P, Other rev net of vbl op cost C
+
+Exp Power Sales Rev C: Converter
+   = 
+   Units: US dollars per year
+   Documentation: DEFINITION: Expected power sales revenues from mature commercial-scale plant plant when fully operational
+
+UNITS:  $/yr
+
+TYPE: Constant/Scenario
+
+SOURCE: In real world one can look at engineering design studies to estimate this value.
+
+COMMENT: Downstream NPV calculation assumes constant revs over plant lifetime, once operational. 
+   Used by: Total Exp Revs C, Expected Power Sales Rev P, Other rev net of vbl op cost C
+
+Exp Revs Net of Op Cost: Converter
+   = Total_Exp_Revs_C[TechnologyPlatform]-Expected_Op_Cost[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected revenues net of  expected operating cost for commercial-scale plant when fully operational, using current values for inputs 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant rev net of op cost over plant lifetime, once plant is operational. 
+
+   Used by: NPV Revs Net of Op Cost C, Expected Taxable Income 2 C, Expected Taxable Income 1 C, Expected Taxable Income 3 C
+
+Exp Sales Rev C: Converter
+   = Expected_Plant_Output_C[TechnologyPlatform]*Expected_Price_after_Subs[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected sales revenue for "next" commercial-scale plant 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant over plant lifetime, once operational. 
+
+   Used by: Total Exp Revs C
+
+Expected Equity Fraction: Converter
+   = Mature_Industry_Equity_Fraction*(State_of_the_Industry_Multipliers[TechnologyPlatform,DebtFrac])+
+1*(1-State_of_the_Industry_Multipliers[TechnologyPlatform,DebtFrac])
+   Units: Unitless
+   Documentation: DEFINITION: Fraction of Investment to be funded through equity financing for commercial-scale plants.
+
+UNITS:  Unitless
+
+TYPE: Internal calculation
+
+SOURCE: Ass'n
+
+COMMENT: Calculated as weighted average based on state of industry.  Ranges between value of 1 and given by mature industry equity fraction.
+
+   Used by: Equity Fraction C, Equity Fraction P
+
+Expected FCI after subs C: Converter
+   = (Expected_FCI_C[TechnologyPlatform]   - FCI_Subs_Logic_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Expected Fixed Capital Investment for "next" Commercial-scale Plant, including cost growth associated with immature industry
+ 
+UNITS: US Dollars
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENT: 
+   Used by: Initial Equity Investment C, est depreciation expense C, Loan Principal C
+
+Expected FCI after subs P: Converter
+   = Expected_FCI_P[TechnologyPlatform] - FCI_Subs_Logic_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Expected Fixed Capital Investment for "next" Pioneer Plant, after Capital Subsidy
+ 
+UNITS: US Dollars
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENT: 
+
+   Used by: Initial Equity Investment p, estimated depreciation expense pioneer, Loan Principal P
+
+Expected FCI C: Converter
+   = Mature_Industry_FCI[TechnologyPlatform]*State_of_the_Industry_Multipliers[TechnologyPlatform,CapitalCost] * FCI_Multiplier * fraction_of_Commercial_cost_growth_anticipated +
+Mature_Industry_FCI[TechnologyPlatform] * FCI_Multiplier * (1- fraction_of_Commercial_cost_growth_anticipated)
+   Units: US Dollars
+   Documentation: DEFINITION: Expected Fixed Capital Investment for "next" Commercial-scale Plant, including cost growth associated with immature industry
+ 
+UNITS: US Dollars
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENT: 
+   Used by: Expected FCI after subs C, FCI Subs Logic C
+
+Expected FCI P: Converter
+   = (Nominal_Pioneer_FCI[TechnologyPlatform] * (State_of_the_Industry_Multipliers[TechnologyPlatform,CapitalCost]) * FCI_Multiplier * fraction_of_PIoneer_cost_growth_anticipated)+
+(Nominal_Pioneer_FCI[TechnologyPlatform]) * FCI_Multiplier * (1-fraction_of_PIoneer_cost_growth_anticipated)
+   Units: US Dollars
+   Documentation: DEFINITION: Expected Fixed Capital Investment for "next" Pioneer Plant.  Calculated as a weighted average between "nominal" and "capital cost growth escalated" FCI
+ 
+UNITS: US Dollars
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENT: note the scenario input that allows one to capture or ignore cost growth
+
+   Used by: FCI Subs Logic P, Expected FCI after subs P
+
+Expected Fixed Op Cost C: Converter
+   = 
+   Units: US dollars per year
+   Documentation: DEFINITION: Fixed op cost for mature commercial-scale plant
+ 
+UNITS: $/yr
+ 
+TYPE: Constant/Scenario
+ 
+SOURCE: In real world one can look at engineering design studies to estimate this value.
+ 
+COMMENT: 
+
+   Used by: Expected Op Cost, Expected Fixed Op Cost P
+
+Expected Fixed Op Cost P: Converter
+   = Expected_Fixed_Op_Cost_C[TechnologyPlatform]*pioneer_cost_scale_factor
+   Units: US dollars per year
+   Documentation: DEFINITION: Fixed op cost for "next" pioneer plant
+ 
+UNITS: $/yr
+ 
+TYPE: calculated value
+ 
+SOURCE: 
+ 
+COMMENT: 
+
+   Used by: Expected Op Cost Pioneer
+
+Expected FS cost after subs C: Converter
+   = Expected_FS_Cost_USD_per_ton[TechnologyPlatform] - FS_Subs_Logic_C[TechnologyPlatform]
+   Units: USD per ton
+   Documentation: DEFINITION: Expected Feedstock cost for Commercial scale plant, incl any subsidy
+
+UNITS: USD per Ton
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  N/A
+
+
+   Used by: FS Cost USD per gal C, Feedstock Cost USD per gal C
+
+Expected FS cost after subs P: Converter
+   = Expected_FS_Cost_USD_per_ton[TechnologyPlatform] - FS_Subs_Logic_P[TechnologyPlatform]
+   Units: USD per ton
+   Documentation: DEFINITION: Expected Feedstock cost for Pioneer Plant, incl any subsidy
+
+UNITS: $/ton
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  N/A
+
+
+   Used by: FS Cost USD per gal Pioneer, Feedstock Cost USD per gal P
+
+Expected FS Cost USD per ton: Converter
+   = Feedstock_Cost[TechnologyPlatform]
+   Units: USD per ton
+   Documentation: DEFINITION:  Expected cost/ton for feedstock by technology by region, delivered at throat of reactor ($/ton)
+
+TYPE:  Module Interface
+
+SOURCE: 
+
+COMMENT:  this variable reflects a module interface in a more complete supply chain model
+
+   Used by: Expected FS cost after subs C, Expected FS cost after subs P
+
+Expected Op Cost: Converter
+   = (Expected_Fixed_Op_Cost_C[TechnologyPlatform] + FS_Cost_USD_per_yr_C[TechnologyPlatform] + Expected_Other_VBL_Op_Cost_C[TechnologyPlatform]) * OpCost_Multiplier
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected operating cost for commercial-scale plant when fully operational, using current values for inputs ($/yr)
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant costs over plant lifetime, once operational. 
+
+   Used by: Exp Revs Net of Op Cost
+
+Expected Op Cost Pioneer: Converter
+   = (Expected_Fixed_Op_Cost_P[TechnologyPlatform] + FS_Cost_USD_per_yr_Pioneer[TechnologyPlatform] + Expected_Other_VBL_Op_Cost_P[TechnologyPlatform]) * OpCost_Multiplier
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected operating cost for "next" pioneer plant when fully operational
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant costs over plant lifetime, once operational. 
+
+   Used by: Expected Revs Net of Op Cost P
+
+Expected Other Coproduct Sales Rev P: Converter
+   = Exp_Other_Coproduct_Sales_Rev_C[TechnologyPlatform]*pioneer_coproduct_scale_factor
+   Units: US dollars per year
+   Documentation: DEFINITION: Expected  revenues from other coproducts from Pioneer plant when fully operational.
+
+UNITS:  $/yr
+
+TYPE: calculated value
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant revs over plant lifetime, once operational. 
+
+
+
+   Used by: Total Expected Revs Pioneer, Other rev net of vbl op cost P
+
+Expected Other VBL Op Cost C: Converter
+   = 
+   Units: US dollars per year
+   Documentation: DEFINITION: Other (non feedstock) vbl op cost for mature commercial plant
+ 
+UNITS: $/yr
+ 
+TYPE: Constant/Scenario
+ 
+SOURCE: In real world one can look at engineering design studies to estimate this value.
+
+COMMENT: 
+
+   Used by: Expected Op Cost, Expected Other VBL Op Cost P, Other rev net of vbl op cost C
+
+Expected Other VBL Op Cost P: Converter
+   = Expected_Other_VBL_Op_Cost_C[TechnologyPlatform]*pioneer_cost_scale_factor
+   Units: US dollars per year
+   Documentation: DEFINITION: Other (non feedstock) vbl op cost for "next" pioneer plant
+ 
+UNITS: $/yr
+ 
+TYPE: calculated value
+ 
+SOURCE: 
+ 
+COMMENT: 
+
+   Used by: Expected Op Cost Pioneer, Other rev net of vbl op cost P
+
+Expected Pioneer Plant Output: Converter
+   = Expected_Pioneer_Plant_Output_Gal_per_Day[TechnologyPlatform]*Days_per_Year_Online
+   Units: GPY
+   Documentation: DEFINITION: Calculates expected output in gal/yr for pioneer-scale plants
+
+UNITS: GPY
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  N/A
+
+COMMENT: 
+
+   Used by: FS Cost USD per yr Pioneer, Expected Sales Rev Pioneer
+
+Expected Pioneer Plant Output Gal per Day: Converter
+   = FS_throughput_P[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: GPD
+   Documentation: DEFINITION: Calculates output of "next" Pioneer plant by applying process yield to feedstock throughput
+
+UNITS: GPD
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  N/A
+
+COMMENT: 
+
+   Used by: Expected Pioneer Plant Output
+
+Expected Plant Output C: Converter
+   = Expected_Plant_Output_Gal_per_Day_C[TechnologyPlatform]*Days_per_Year_Online
+   Units: GPY
+   Documentation: DEFINITION: Calculates output of "next" commercial-scale plant by applying process yield to feedstock throughput
+
+UNITS: USD per year
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  N/A
+
+COMMENT: 
+
+   Used by: FS Cost USD per yr C, Exp Sales Rev C
+
+Expected Plant Output Gal per Day C: Converter
+   = FS_throughput_C[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: GPD
+   Documentation: DEFINITION: Calculates output of "next" Commercial scale plant by applying process yield to feedstock throughput
+
+UNITS: GPD
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  N/A
+
+COMMENT: 
+
+   Used by: Expected Plant Output C
+
+Expected Power Sales Rev P: Converter
+   = Exp_Power_Sales_Rev_C[TechnologyPlatform]*pioneer_coproduct_scale_factor
+   Units: US dollars per year
+   Documentation: DEFINITION: Expected power sales revenues from  Pioneer-scale plant when fully operational,
+
+UNITS:  USD/year
+
+TYPE: calculated value
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant revs over plant lifetime, once operational. 
+
+
+
+   Used by: Total Expected Revs Pioneer, Other rev net of vbl op cost P
+
+Expected Price after Subs: Converter
+   = PoP_Unsubsidized_Price[TechnologyPlatform] + PoP_Price_Subs_Logic[TechnologyPlatform]
+   Units: USD per gallon
+   Documentation: DEFINITION: Expected Price for ourput of each technology, incl any subsidy
+
+UNITS: $/gal
+
+TYPE: 
+
+SOURCE:  
+
+
+   Used by: Exp Sales Rev C, Expected Sales Rev Pioneer, Cost to Price Ratio P, Cost to Price Ratio C
+
+Expected Revs Net of Op Cost P: Converter
+   = Total_Expected_Revs_Pioneer[TechnologyPlatform]-Expected_Op_Cost_Pioneer[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected revenues net of  expected operating cost for plant when fully operational, using current values for inputs 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant rev net of op cost over plant lifetime, once plant is operational. 
+
+   Used by: NPV Revs Net of Op Cost P, Expected Taxable Income 2 P, Expected Taxable Income 1 P, Expected Taxable Income 3 P
+
+Expected Sales Rev Pioneer: Converter
+   = Expected_Pioneer_Plant_Output[TechnologyPlatform]*Expected_Price_after_Subs[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected sales revenue for Pioneer-scale plant when fully operational (incl subsidy)
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant over plant lifetime, once operational. 
+
+
+
+   Used by: Total Expected Revs Pioneer
+
+Expected Tax 1 C: Converter
+   = Expected_Taxable_Income_1_C[TechnologyPlatform]*Expected_Tax_Rate
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxes during portion of plant life beginning when plant is operational and ending at end of loan term or depreciation period--whichever is smaller. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: NPV Taxes 1 C
+
+Expected Tax 1 P: Converter
+   = Expected_Taxable_Income_1_P[TechnologyPlatform]*Expected_Tax_Rate
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected yearly taxes during portion of plant life beginning when plant is operational and ending at end of loan term or depreciation period--whichever is smaller. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: NPV Taxes 1 P
+
+Expected Tax 2 C: Converter
+   = Expected_Taxable_Income_2_C[TechnologyPlatform]*Expected_Tax_Rate
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxes during portion of plant life between end of depreciation period and end of loan term. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: NPV Taxes 2 C
+
+Expected Tax 2 P: Converter
+   = Expected_Taxable_Income_2_P[TechnologyPlatform]*Expected_Tax_Rate
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected yearly taxes during portion of plant life between end of depreciation period and end of loan term. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: NPV Taxes 2 P
+
+Expected Tax 3 C: Converter
+   = Expected_Taxable_Income_3_C[TechnologyPlatform]*Expected_Tax_Rate
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxes during portion of plant lifetime after loan term AND depreciation period 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: NPV Taxes 3 C
+
+Expected Tax 3 P: Converter
+   = Expected_Taxable_Income_3_P[TechnologyPlatform]*Expected_Tax_Rate
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected yearly taxes during portion of plant lifetime after loan term AND depreciation period 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: NPV Taxes 3 P
+
+Expected Tax Rate: Converter
+   = 0.39
+   Units: Unitless
+   Documentation: DEFINITION: Expected tax rate associated with income from this project  
+
+UNITS:  Unitless
+
+TYPE: Constant
+
+SOURCE: assumed value
+
+COMMENT: 
+
+   Used by: Expected Tax 2 C, Expected Tax 1 C, Expected Tax 3 C, Expected Tax 2 P, Expected Tax 1 P, Expected Tax 3 P
+
+Expected Taxable Income 1 C: Converter
+   = Exp_Revs_Net_of_Op_Cost[TechnologyPlatform]-(est_depreciation_expense_C[TechnologyPlatform])-Rough_Estimate_Annual_Interest[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxable income during portion of plant life when both depreciation period and loan term are in effect. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+   Used by: Expected Tax 1 C
+
+Expected Taxable Income 1 P: Converter
+   = Expected_Revs_Net_of_Op_Cost_P[TechnologyPlatform]-
+((estimated_depreciation_expense_pioneer[TechnologyPlatform]) + Rough_Estimate_Annual_Interest_P[TechnologyPlatform])
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxable income during portion of plant life when both depreciation period and loan term are in effect. 
+
+UNIT: USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: 
+   Used by: Expected Tax 1 P
+
+Expected Taxable Income 2 C: Converter
+   = IF (depreciation_period<term_of_loan) 
+THEN
+(Exp_Revs_Net_of_Op_Cost[TechnologyPlatform])-(Rough_Estimate_Annual_Interest[TechnologyPlatform])
+ELSE
+(Exp_Revs_Net_of_Op_Cost[TechnologyPlatform])-(est_depreciation_expense_C[TechnologyPlatform])
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxable income during portion of plant life between end of depreciation period and end of loan term. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: IF THEN ELSE construct enables calculation to work when depreciation period < loan term as well as when depreciation period >= loan term
+
+   Used by: Expected Tax 2 C
+
+Expected Taxable Income 2 P: Converter
+   = IF (depreciation_period<term_of_loan) 
+THEN
+(Expected_Revs_Net_of_Op_Cost_P[TechnologyPlatform])-(Rough_Estimate_Annual_Interest_P[TechnologyPlatform])
+ELSE
+(Expected_Revs_Net_of_Op_Cost_P[TechnologyPlatform])-(estimated_depreciation_expense_pioneer[TechnologyPlatform])
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxable income during portion of plant life between end of depreciation period and end of loan term. 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: IF THEN ELSE construct enables calculation to work when depreciation period < loan term as well as when depreciation period >= loan term
+
+   Used by: Expected Tax 2 P
+
+Expected Taxable Income 3 C: Converter
+   = Exp_Revs_Net_of_Op_Cost[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxable income during portion of plant lifetime after loan term AND depreciation period 
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Note that this is the same as Expected Rev net of Op Cost
+
+   Used by: Expected Tax 3 C
+
+Expected Taxable Income 3 P: Converter
+   = Expected_Revs_Net_of_Op_Cost_P[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected taxable income during portion of plant lifetime after loan term AND depreciation period 
+UNITS:  $/yr
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Note that this is the same as Expected Rev net of Op Cost
+
+   Used by: Expected Tax 3 P
+
+FCI Input: Converter
+   = 
+   Units: Unitless
+   Used by: FCI Multiplier
+
+FCI Multiplier: Converter
+   = FCI_Input
+   Units: Unitless
+   Used by: Expected FCI C, Expected FCI P
+
+FCI Subs Logic C: Converter
+   = Policy_Switch[FCI_C,TechnologyPlatform] * Policy_time_constraints[FCI_C,TechnologyPlatform] *
+Expected_FCI_C[TechnologyPlatform] * Subsidy_Amt[FCI_C]
+   Units: US Dollars
+   Documentation: DEFINITION: Logic that controls full commercial scale fixed capital investment subsidies.  Logic is controlled by switch, time constraints, and subsidy amount
+
+UNITS: USD
+
+TYPE: Internal Calculation | Interface to Other Sectors
+
+SOURCE: n/a
+
+COMMENTS: 
+
+
+   Used by: Expected FCI after subs C, yrly FCI subs C
+
+FCI Subs Logic P: Converter
+   = Policy_Switch[FCI_P,TechnologyPlatform] * Policy_time_constraints[FCI_P,TechnologyPlatform] *
+Expected_FCI_P[TechnologyPlatform] * Subsidy_Amt[FCI_P]
+   Units: US Dollars
+   Documentation: DEFINITION: Logic that controls pioneer scale fixed capital investment subsidies.  Logic is controlled by switch, time constraints, and subsidy amount
+
+UNITS: USD
+
+TYPE: Internal Calculation | Interface to Other Sectors
+
+SOURCE: n/a
+
+COMMENTS: 
+
+
+   Used by: yrly FCI subs P, Expected FCI after subs P
+
+Feedstock Constraint on Utilization: Converter
+   = IF  actual_fs_demand_at_nominal_utilization[TechnologyPlatform]> 0 THEN 
+MIN(1, SUM(actual_fs_consn)/actual_fs_demand_at_nominal_utilization[TechnologyPlatform]) ELSE 1
+   Units: Unitless
+   Documentation: DEFINITION: calculates constraint imposed by feedstock availability on conversion capacity utilization
+ 
+UNITS: unitless
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: linear constraint as function of feedstock availablity.  In default case for simple model, constraint is not active.
+   Used by: Plant Utilization Factors C, Plant Utilization Factors P
+
+Feedstock Cost: Converter
+   = TIME
+   Units: USD per ton
+   Documentation: DEFINITION:  Expected cost/ton for feedstock by technology, delivered at throat of reactor ($/t)
+
+TYPE:  Module Interface
+
+SOURCE:  assumed (constant) values
+
+COMMENT:  Can define these as technology-specific time-dependent scenarios.
+
+   Used by: Expected FS Cost USD per ton
+
+Feedstock Cost USD per gal C: Converter
+   = IF Avg_PY_C[TechnologyPlatform] > 0 THEN 
+Expected_FS_cost_after_subs_C[TechnologyPlatform] / Avg_PY_C[TechnologyPlatform]
+ELSE 0
+   Units: USD per gallon
+   Documentation: DEFINITION: fcalculates feedstock cost as $/gal metric, accounting for process yield for full commercial scale facilities
+ 
+UNITS: USD per gallon
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: component of cost term for price/cost ratio
+   Used by: Cost to Price Ratio C
+
+Feedstock Cost USD per gal P: Converter
+   = IF Avg_PY_P[TechnologyPlatform] > 0 THEN
+Expected_FS_cost_after_subs_P[TechnologyPlatform] / Avg_PY_P[TechnologyPlatform]
+ELSE 0
+   Units: USD per gallon
+   Documentation: DEFINITION: fcalculates feedstock cost as $/gal metric, accounting for process yield for pioneer scale facilities
+ 
+UNITS: USD per gallon
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: component of cost term for price/cost ratio
+   Used by: Cost to Price Ratio P
+
+Frac Plant Debt Financed C: Converter
+   = 1-Equity_Fraction_C[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: Fraction of Investment to be funded through debt financing 
+
+UNITS:  Unitless
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: For each technology, equity + debt fraction = 1
+
+   Used by: Loan Principal C
+
+Frac Plant Debt Financed P: Converter
+   = 1-Equity_Fraction_P[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: Fraction of Investment for "next" Pioneer Plant to be funded through debt financing
+
+UNITS:  unitless
+
+TYPE: Internal Calculation
+
+SOURCE: 
+
+COMMENT: For each technology, equity + debt fraction = 1  Logic around loan guarantees determines equity fraction, hence, debt fraction.
+
+   Used by: Loan Principal P
+
+frac rate of growth demo experience: Converter
+   = IF Cumulative_Demo_Experience[TechnologyPlatform] >= Min_Demo_Experience_for_Learning[TechnologyPlatform] 
+THEN (logging_demo_experience[TechnologyPlatform]/Cumulative_Demo_Experience[TechnologyPlatform])
+ELSE 0
+   Units: Per Year
+   Documentation: Definition: Calculates (fractional) rate of growth in demo-scale experience.  Used as input to rate of doubling calculation.
+
+Units:  1/yr
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  IF/THEN/ELSE construct prevents division by zero, unstable results when cumulative experience is < experience threshold
+
+   Used by: rate of doubling demo experience
+
+frac rate of growth in industry output: Converter
+   = IF Cumulative_Industry_Output[TechnologyPlatform] >= Min_Cume_Industry_Output_For_Learning[TechnologyPlatform] 
+THEN (output_bb_gpy_by_tech[TechnologyPlatform]/Cumulative_Industry_Output[TechnologyPlatform])
+ELSE 0
+   Units: Per Year
+   Documentation: Definition: Calculates (fractional) rate of growth in commercial scale output.  Used as input to rate of doubling calculation.
+
+Units:  1/yr
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  IF/THEN/ELSE construct prevents division by zero, unstable results when cumulative experience is < experience threshold
+
+   Used by: rate of doubling industry output by technology
+
+frac rate of growth pilot experience: Converter
+   = IF Cumulative_Pilot_Experience[TechnologyPlatform] >= Min_Pilot_Experience_for_Learning[TechnologyPlatform] 
+THEN (logging_pilot_experience[TechnologyPlatform]/Cumulative_Pilot_Experience[TechnologyPlatform])
+ELSE 0
+   Units: Per Year
+   Documentation: Definition: Calculates (fractional) rate of growth in pilot-scale experience.  Used as input to rate of doubling calculation.
+
+Units:  1/yr
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  IF/THEN/ELSE construct prevents division by zero, unstable results when cumulative experience is < experience threshold
+
+ 
+   Used by: rate of doubling pilot experience
+
+fraction of Commercial cost growth anticipated: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: enables input of scenarios around investor expectations of cost growth in NPV calculation.
+
+UNITS: unitless
+ 
+TYPE: scenario
+ 
+SOURCE: 
+ 
+COMMENT: 0 => no anticipated cost growth (Naive investment).  1=>  expect the cost growth implied by learning curves/industry maturity
+
+   Used by: Expected FCI C
+
+fraction of PIoneer cost growth anticipated: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: enables input of scenarios around investor expectations of cost growth in NPV calculation.
+
+UNITS: Unitless
+ 
+TYPE: scenario
+ 
+SOURCE: 
+ 
+COMMENT: 0 => no anticipated cost growth (Naive investment).  1=>  expect the cost growth implied by learning curves/industry maturity
+
+   Used by: Expected FCI P
+
+FS Cost USD per gal C: Converter
+   = (Expected_FS_cost_after_subs_C[TechnologyPlatform]/State_of_Industry_Process_Yield[TechnologyPlatform])
+   Units: USD per gallon
+   Documentation: DEFINITION:  Calculates Expected Feedstock Cost in $/gal, by technology
+
+UNITS:  USD per Gallon
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  n/a
+
+COMMENT:  
+
+
+   Used by: FS Cost USD per yr C
+
+FS Cost USD per gal Pioneer: Converter
+   = (Expected_FS_cost_after_subs_P[TechnologyPlatform]/State_of_Industry_Process_Yield[TechnologyPlatform])
+   Units: USD per gallon
+   Documentation: DEFINITION:  Calculates Expected Feedstock Cost in $/gal, by technology
+
+UNITS:  USD/gallon
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  n/a
+
+COMMENT:  
+
+   Used by: FS Cost USD per yr Pioneer
+
+FS Cost USD per yr C: Converter
+   = FS_Cost_USD_per_gal_C[TechnologyPlatform]
+*Expected_Plant_Output_C[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION:  Calculates Expected  feedstpcl cost in $/yr, by technology, for "next" commercial-scale plant
+
+UNITS:  USD per year
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  n/a
+
+COMMENT:  
+
+   Used by: Expected Op Cost
+
+FS Cost USD per yr Pioneer: Converter
+   = FS_Cost_USD_per_gal_Pioneer[TechnologyPlatform]
+*Expected_Pioneer_Plant_Output[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION:  Calculates Expected Feedstock Cost in $/yr, by technology
+
+UNITS:  USD per year
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  n/a
+
+COMMENT:  
+
+   Used by: Expected Op Cost Pioneer
+
+fs demand incl pipeline: Converter
+   = actual_fs_demand_at_nominal_utilization[TechnologyPlatform] + SUM(Total_Annual_Reqd_FS_Pipeline)
+   Units: million-ton/yr
+   Documentation: DEFINITION: required cellulosic feedstock per yr by region to support in place prod'n capacity PLUS production capacity associated with pipeline of plants in development
+ 
+UNITS: million tons per year
+ 
+TYPE: sector/module interface
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+FS Subs Logic C: Converter
+   = Policy_Switch[FeedstockC,TechnologyPlatform] * Policy_time_constraints[FeedstockC,TechnologyPlatform] * Subsidy_Amt[FeedstockC] * one_dollar_per_ton
+   Units: USD per ton
+   Documentation: DEFINITION: Logic that controls feedstock subsidy accruing to fuel producers.  Logic controlled by switch, time constraints, and subsidy amount
+
+UNITS: USD per ton
+
+TYPE: Internal Calculation | Interface to Other Sectors
+
+SOURCE: n/a
+
+COMMENTS: 
+
+   Used by: Expected FS cost after subs C, yrly fs subs C
+
+FS Subs Logic P: Converter
+   = Policy_Switch[FeedstockP,TechnologyPlatform] * Policy_time_constraints[FeedstockP,TechnologyPlatform] * Subsidy_Amt[FeedstockP] * one_dollar_per_ton
+   Units: USD per ton
+   Documentation: DEFINITION: Logic that controls feedstock subsidy accruing to fuel producers using pioneer-scale facilities.  Logic controlled by switch, time constraints, and subsidy amount
+
+UNITS: USD per ton
+
+TYPE: Internal Calculation | Interface to Other Sectors
+
+SOURCE: n/a
+
+COMMENTS: 
+
+   Used by: yrly fs subs P, Expected FS cost after subs P
+
+FS throughput C: Converter
+   = Mature_FS_Thruput_Capacity_C[TechnologyPlatform]*State_of_the_Industry_Multipliers[TechnologyPlatform,InputCap]
+   Units: ton per day
+   Documentation: DEFINITION:  Calculates expected full commercial scale plant throughput capacity, measured at throat of reactor, on a per-plant basis, for feedstock, by conversion option.  Learning curve effect drives increases in throughput through debottlenecking.
+
+UNITS:  tons per day
+
+TYPE:  Sector Interface
+
+SOURCE:  
+
+COMMENT:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+   Used by: Avg Plant Output gal\day C, Expected Plant Output Gal per Day C, Reqd FS supply Pipeline C, Avg Plant Output gpd pipeline C
+
+FS throughput P: Converter
+   = Mature_FS_Thruput_Capacity_P[TechnologyPlatform]*State_of_the_Industry_Multipliers[TechnologyPlatform,InputCap]
+   Units: ton per day
+   Documentation: DEFINITION:  Calculates expected pioneer plant throughput capacity, measured at throat of reactor, on a per-plant basis, for feedstock, by conversion option.  Learning curve effect drives increases in throughput through debottlenecking.
+
+UNITS:  tons per day
+
+TYPE:  Sector Interface
+
+SOURCE:  
+
+COMMENT:  Note on units:  Implicitly this is a per-project concept.  Further downstream, conversion factor of "one project" is used to create correct units for industry output capacity
+
+
+   Used by: Expected Pioneer Plant Output Gal per Day, Avg Plant Output gal per day P, Reqd FS supply Pipeline P, Avg Plant Output gpd pipeline P
+
+Gas Price Shock Scenario: Converter
+   = TIME
+   Units: Unitless
+   Documentation: DEFINITION:  Multiplier used to scale upward or downward the selected Gasoline POD price scenario.
+
+TYPE: Time dependent graphical function scenario input
+
+SOURCE: 
+
+COMMENT: Value of 1 implies no shock.  Values >1 imply upward pressure on prices relative to chosen scenario.  Values <1 imply downward pressure on prices relative to scenario values.
+
+   Used by: Gasoline POD price before tax scenarios
+
+gasoline conversion technology multiplier: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: multiplier that is applied to point of production gasoline.  used to calculate point of productiion price/opportunity cost for products produced by different technology platforms.
+
+UNITS: $/gal
+
+TYPE: 
+
+SOURCE:  
+   Used by: PoP Unsubsidized Price
+
+Gasoline POD price before tax: Converter
+   = SUM(Gasoline_POD_price_scenario_array)
+   Units: USD per gallon
+   Documentation: DEFINITION: Nominal price/gallon for gasoline equivalent at point of dist'n before taxes.  Sums up across the array elements of the nput, only one of which is/should be active within any run.
+ 
+UNITS: $/gal
+ 
+TYPE: 
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: Gasoline POP Price
+
+Gasoline POD price before tax scenarios: Converter
+   = base_Gasoline_POD_price_before_tax_scenarios[GasPriceScenario] * Gas_Price_Shock_Scenario
+   Units: USD per gallon
+   Documentation: DEFINITION: Nominal price/gallon for gasoline equivalent at point of dist'n before taxes
+ 
+UNITS: $/gal
+ 
+TYPE: scenario inputs
+ 
+SOURCE:  EIA, team-defined, and user-input
+ 
+COMMENTS: includes gas price shock logic
+   Used by: Gasoline POD price scenario array
+
+Gasoline POD price scenario array: Converter
+   = Gasoline_POD_price_before_tax_scenarios[GasPriceScenario] * Gasoline_POD_price_scenario_switch[GasPriceScenario]
+   Units: USD per gallon
+   Documentation: DEFINITION: Nominal price/gallon for gasoline equivalent at point of dist'n before taxes
+ 
+UNITS: $/gal
+ 
+TYPE: scenario input
+ 
+SOURCE:  EIA, team-defined, and user-input
+ 
+COMMENTS: Logic in this eq'n selects the appropriate scenario input, basd on which element in the POD price scenario switch is set to 1.
+   Used by: Gasoline POD price before tax
+
+Gasoline POD price scenario switch: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION: Set of switches defining which scenario we are using in this run
+ 
+UNITS: $/gal
+ 
+TYPE: user input
+ 
+SOURCE:  
+ 
+COMMENTS: these are assigned to a chained switch.  Only 1 of these should be set to 1 at any point in time.
+   Used by: Gasoline POD price scenario array
+
+Gasoline POP Price: Converter
+   = Gasoline_POD_price_before_tax
+- PoD_PoP_gasoline_Offset
+   Units: USD per gallon
+   Documentation: DEFINITION:  galculated gasoline PoP price based on scenario input and assumed spread between PoP and PoD
+
+UNITS: USD/gal
+
+TYPE:  internal calculation
+
+SOURCE:  
+
+COMMENT:  
+   Used by: PoP Unsubsidized Price
+
+In Design&Cons C: Stock
+   = 
+   Units: Project
+   Documentation: DEFINITION:  Conveyor that tracks full commercial scale operations in design and construction stages, by technology
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  
+
+   Used by: Avg PY D&C C, Pipeline C
+
+In Design&Cons P: Stock
+   = 
+   Units: Project
+   Documentation: DEFINITION:  Conveyor that tracks pioneer scale operations in design and construction stages, by technology
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  
+
+   Used by: Avg PY D&C P, Pipeline P
+
+increase in PY commercial industry: Flow
+   = OnLine_C[TechnologyPlatform]*Industry_Process_Yield_Gap[TechnologyPlatform]*rate_of_industry_process_yield_adjustment
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Captures "spillover" from learning curve dynamics around process yield  into existing full  commercial scale operations
+
+UNITS: gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Exists only for full commercial scale--does not exist for pioneer-scale operations.
+
+
+Industry Process Yield Gap: Converter
+   = State_of_Industry_Process_Yield[TechnologyPlatform]-Avg_PY_C[TechnologyPlatform]
+   Units: gal per ton
+   Documentation: DEFINITION:  Captures difference between current "state of industry process yield" and average process yield as reflected in current industry.
+
+UNITS: gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS: 
+
+   Used by: increase in PY commercial industry
+
+initating P: Flow
+   = pioneer_plant_initiation_logic[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION: Inflow representing the initiation of design and construction of pioneer-scale operations
+
+UNITS:  Projects per Year
+
+TYPE:  Internal calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note that the driver of this flow has been discretized in order to capture "lumpy" capacity acquisition
+
+   Used by: PY influx P
+
+Initial Equity Investment C: Converter
+   = Expected_FCI_after_subs_C[TechnologyPlatform]*Equity_Fraction_C[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Amount of total commercial-scale project Fixed Capital Investment to be financed through equity interest 
+
+UNITS:  US Dollars
+
+TYPE: Internal calculation
+
+SOURCE: 
+
+COMMENT: 
+   Used by: NPV Investment C
+
+Initial Equity Investment p: Converter
+   = Expected_FCI_after_subs_P[TechnologyPlatform]*Equity_Fraction_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Amount of total project Fixed Capital Investment to be financed through equity ( $ )
+
+UNITS:  US Dollars
+
+TYPE: Internal calculation
+
+SOURCE: 
+
+COMMENT:
+   Used by: NPV Investment P
+
+Initial Indices of Commercial Maturity: Converter
+   = 0
+   Units: Unitless
+   Documentation: DEFINITION:  Initial level of maturity of pilot effort, by industry
+
+UNITS:  unitless
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT: Range should be between 0 and 1.  0 implies tabula rasa; 1 implies completely mature pilot effort  Initial values derived to be consistent with cumulative experience, progress ratio
+   Used by: 
+
+Initial Indices of Demo Maturity: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION:  Initial level of maturity of demoeffort, by industry
+
+UNITS:  Dimensionless fraction
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT: Range should be between 0 and 1.  0 implies tabula rasa; 1 implies completely mature demo effort  Initial values derived to be consistent with cumulative experience, progress ratio
+   Used by: 
+
+Initial Indices of Pilot Maturity: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION:  Initial level of maturity of pilot effort, by industry
+
+UNITS:  Unitless
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT: Range should be between 0 and 1.  0 implies tabula rasa; 1 implies completely mature pilot effort  Initial values derived to be consistent with cumulative experience, progress ratio
+   Used by: 
+
+Initial Pilot Demo Maturity Multiplier: Converter
+   = PreCom_Maturity_Input
+   Units: Unitless
+   Used by: 
+
+initiating C: Flow
+   = commercial_plant_initiation_logic[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION: Inflow representing the initiation of design and construction of full commercial-scale operations
+
+UNITS:  Projects per Year
+
+TYPE:  Internal calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note that the driver of this flow has been discretized in order to capture "lumpy" capacity acquisition
+
+   Used by: PY influx C
+
+initiating demo development: Flow
+   = demo_start[TechnologyPlatform] * PreCom_Invest_Multiplier * technology_switches[TechnologyPlatform]
+   Units: project/yr
+   Documentation: Definition: Inflow representing initiation of demonstration projects by technology
+
+Units: Projects/yr
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+initiating pilot development: Flow
+   = pilot_start[TechnologyPlatform] * PreCom_Invest_Multiplier * technology_switches[TechnologyPlatform]
+   Units: project/yr
+   Documentation: Definition: Inflow representing initiation of pilot projects by technology
+
+Units: Projects/yr
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+invest attractiveness weighting: Converter
+   = 0.08
+   Units: 1/million USD
+   Documentation: DEFINITION: Weighting factor for logit function calculation
+ 
+UNITS: 
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: attr OTHER, nominal attractiveness P, nominal attractiveness C
+
+k C: Converter
+   = 0
+   Units: Unitless
+   Documentation: DEFINITION: Assumed non-$-based utility component ofattractiveness of commercial scale operations
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: nominal attractiveness C
+
+k OTHER: Converter
+   = 0
+   Units: Unitless
+   Documentation: DEFINITION: Assumed non-$-based utility component ofattractiveness of other uses of plant construction capacity
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: attr OTHER
+
+k P: Converter
+   = 0
+   Units: Unitless
+   Documentation: DEFINITION: Assumed non-$-based utility component of attractiveness of pioneer-scale operations
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: nominal attractiveness P
+
+learning logic: Flow
+   = rate_of_doubling_industry_output_by_technology[TechnologyPlatform]*commercial_maturity_gap[TechnologyPlatform]*(1-Commercial_Progress_Ratios[TechnologyPlatform] * ProgRatio_Multiplier) +
+ tech_breakthru_logic[TechnologyPlatform]
+   Units: Per Year
+   Documentation: Definition:  Learning curve logic calculates flow that increases commercial-scale maturity.  Applies  quantity (1-progress ratio) to maturity gap and rate of doubling, to generate increase in maturity.  Each doubling of cumulative output drives a constant percentage change in the gap between "current" and mature index of maturity.
+
+Units: 1/yr
+
+Type:  Internal Calculation
+
+Source N/A
+
+Comments:  Additional tech breakthru logic enables representation of exogenous discontinuous changes in maturity
+
+
+length of period 1 C: Converter
+   = years_in_D_C_S_C[TechnologyPlatform]+
+MIN(depreciation_period,term_of_loan)
+   Units: years
+   Documentation: DEFINITION:  Calculates portion of project lifetime up to end of depreciation period OR end of loan term, whichever is SMALLER.  
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT:  
+   Used by: discount factor 1 C
+
+length of period 1 P: Converter
+   = years_in_D_C_S_P[TechnologyPlatform]+
+MIN(depreciation_period,term_of_loan)
+   Units: years
+   Documentation: DEFINITION:  Calculates portion of project lifetime up to end of depreciation period OR end of loan term, whichever is SMALLER.  
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT:  
+   Used by: discount factor 1 P
+
+length of period 2 C: Converter
+   = MAX(depreciation_period,term_of_loan)+years_in_D_C_S_C[TechnologyPlatform]
+   Units: years
+   Documentation: DEFINITION:  Calculates portion of project lifetime up to end of depreciation period OR end of loan term, whichever is LARGER. 
+
+UNITS:  years
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT:  
+   Used by: discount factor 2 C
+
+length of period 2 P: Converter
+   = MAX(depreciation_period,term_of_loan)+years_in_D_C_S_P[TechnologyPlatform]
+   Units: years
+   Documentation: DEFINITION:  Calculates portion of project lifetime up to end of depreciation period OR end of loan term, whichever is LARGER. 
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT:  
+   Used by: discount factor 2 P
+
+Loan Guarantee Logic C: Converter
+   = Policy_Switch[Loan_C,TechnologyPlatform]* Policy_time_constraints[Loan_C,TechnologyPlatform] * Subsidy_Amt[Loan_C]
+   Units: Unitless
+   Documentation: DEFINITION: Logic that controls the fraction of expected full commercial scale fixed capital investment (after any FCI subsidy) that is subject to loan guarantees.  Logic is controlled by switch, time constraints, and subsity amount.  Resultant value is used to define the equity portion of the FCI investment.
+
+UNITS: Unitless
+
+TYPE: Internal Calculation | Interface to Other Sectors
+
+SOURCE: n/a
+
+COMMENTS: 
+
+
+   Used by: Equity Fraction C, per plant L G exposure C
+
+Loan Guarantee Logic P: Converter
+   = Policy_Switch[Loan_P,TechnologyPlatform]* Policy_time_constraints[Loan_P,TechnologyPlatform] * Subsidy_Amt[Loan_P]
+   Units: Unitless
+   Documentation: DEFINITION: Logic that controls the fraction of expected pioneer scale fixed capital investment (after any FCI subsidy) that is subject to loan guarantees.  Logic is controlled by switch, time constraints, and subsity amount.  Resultant value is used to define the equity portion of the FCI investment.
+
+UNITS: Unitless
+
+TYPE: Internal Calculation | Interface to Other Sectors
+
+SOURCE: n/a
+
+COMMENTS: 
+
+   Used by: per plant L G esposure P, Equity Fraction P
+
+Loan Principal C: Converter
+   = Expected_FCI_after_subs_C[TechnologyPlatform]*Frac_Plant_Debt_Financed_C[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Amount of total project Fixed Capital Investment for "next" commercial-scale project to be financed through loan financing ( $ )
+
+UNITS:  US Dollars
+
+TYPE: Internal calculation
+
+SOURCE: 
+
+COMMENT: 
+
+   Used by: Annual Loan Payment C, Cume Interest Payment C
+
+Loan Principal P: Converter
+   = Expected_FCI_after_subs_P[TechnologyPlatform]*Frac_Plant_Debt_Financed_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Amount of total project Fixed Capital Investment for "next" pioneer project to be financed through loan financing 
+
+UNITS:  US Dollars
+
+TYPE: Internal calculation
+
+SOURCE:
+
+COMMENT: 
+
+   Used by: Annual Loan Payment P, Cume Interest Payment P
+
+logging demo experience: Flow
+   = Demo_Scale_Operations[TechnologyPlatform]*Op_Experience_Per_Year
+   Units: Unitless
+   Documentation: Definition:  Flow represents the accrual (years per year) of demo-scale experience
+
+Units:  Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: frac rate of growth demo experience
+
+logging pilot experience: Flow
+   = Pilot_Scale_Operations[TechnologyPlatform]*Op_Experience_Per_Year
+   Units: Unitless
+   Documentation: Definition:  Flow represents the accrual (years per year) of pilot-scale experience
+
+Units:  Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: frac rate of growth pilot experience
+
+Mature Commercial Multipliers: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION:  When have fully mature commercial industry, multiplier of 1 implies you get mature industry values for technology attributes.
+
+UNITS:  unitless
+
+TYPE:  Ass'n--but a pretty good one!
+
+SOURCE:  
+
+COMMENT: 
+   Used by: State of the Industry Multipliers
+
+Mature Demo Multipliers: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION:  Tells what fraction of different technology attributes is realized at the fully mature stage of demo effort
+
+UNITS:  unitless
+
+TYPE:  Ass'n
+
+SOURCE:  
+
+COMMENT: After winding through multiple learning curves, resultant multiplier is applied to mature industry values to define attributes of each technology.
+   Used by: Demo Multipliers
+
+Mature FS Thruput Capacity C: Converter
+   = 
+   Units: ton per day
+   Documentation: DEFINITION:  Assumed mature commercial feedstock throughput, measured at throat of reactor for feedstock
+
+UNITS:  tons/day
+
+TYPE:  
+
+SOURCE:  In real world one can look at engineering design studies to estimate this value.
+
+COMMENT:  Note learning curve effect drives plant throughput (debottlenecking)
+   Used by: FS throughput C, Mature FS Thruput Capacity P
+
+Mature FS Thruput Capacity P: Converter
+   = Mature_FS_Thruput_Capacity_C[TechnologyPlatform]*pioneer_capacity_scale_factor
+   Units: ton per day
+   Documentation: DEFINITION:  Calculates mature pioneer feedstock throughput capacity (AKA input capacity), measured at throat of reactor, per plant, by conversion option
+
+UNITS:  tons/day
+
+TYPE:  calculated value
+
+SOURCE:  
+
+COMMENT: 
+   Used by: FS throughput P
+
+Mature Industry Equity Fraction: Converter
+   = 0.3
+   Units: Unitless
+   Documentation: DEFINITION: Expected fraction of Investment to be funded through equity financing for commercial plants for mature industry
+
+UNITS:  unitless
+
+TYPE: input/scenario
+
+SOURCE: assumed value
+
+COMMENT:  0.3 appears common for large-scale capital project--> 70% debt financing.
+   Used by: Expected Equity Fraction
+
+Mature Industry FCI: Converter
+   = 
+   Units: US Dollars
+   Documentation: DEFINITION: Capital Investment for the commercial-scale project when industry is mature.
+
+UNITS:   $
+
+TYPE: Constant/scenario
+
+SOURCE: In real world one can look at engineering design studies to estimate this value.
+
+COMMENT:   
+
+   Used by: Expected FCI C, Nominal Pioneer FCI
+
+Mature Industry P Success: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION:  Sets likelihood of technically successful plant for completely mature industry
+
+UNITS:  unitless
+
+TYPE:  input assumption
+
+SOURCE:  Assumed to be 1.0
+
+COMMENT:  
+
+   Used by: P Success
+
+Mature Industry Process Yield: Converter
+   = 
+   Units: gal per ton
+   Documentation: DEFINITION:  Assumed expected process yield for fully mature technology
+
+UNITS:  gal/ton
+
+TYPE:  
+
+SOURCE:  In real world one can look at engineering design studies to estimate this value.
+
+COMMENT: 
+   Used by: State of Industry Process Yield
+
+Mature Industry Rate of Return as %: Converter
+   = 10
+   Units: percent/yr
+   Documentation: DEFINITION: Project rate of return required for mature industry project 
+ 
+UNITS: %/yr
+ 
+TYPE: Constant/scenario
+ 
+SOURCE: assumed
+ 
+COMMENTS: 
+ 
+
+   Used by: Req'd Rate of Return as %
+
+Mature Pilot Multipliers: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION:  Tells what fraction of different technology attributes is realized at the fully mature stage of pilot effort
+
+UNITS:  Dimensionless fraction
+
+TYPE:  Ass'n.
+
+SOURCE:  
+
+COMMENT: After winding through multiple learning curves, resultant multiplier is applied to mature industry values to define attributes of each technology.
+   Used by: Pilot Multipliers
+
+Max Plant Construction Capacity: Converter
+   = 30
+   Units: project/yr
+   Documentation: DEFINITION: Provides rough measure of industry ability to construct new plants each year
+ 
+UNITS: plant/yr
+ 
+TYPE:  Ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: 
+ 
+   Used by: desired c starts per year, desired p starts per yr
+
+Min Cume Industry Output For Learning: Converter
+   = 0.025
+   Units: billions-gal
+   Documentation: DEFINITION:  Sets threshold before calculating rate of growth in industry output, and hence, learning. 
+
+UNITS: billions-gal
+
+TYPE: ass'n
+
+SOURCE:  
+
+COMMENT:  This removes discontinuities in calculating rate of doubling when first plant comes on line
+
+   Used by: frac rate of growth in industry output
+
+Min Demo Experience for Learning: Converter
+   = 
+   Units: years
+   Documentation: DEFINITION:  Sets threshold before calculating rate of growth in demo experience, and hence, learning. 
+
+UNITS:  yr
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT:  This removes discontinuities in calculating rate of doubling when first operation comes on line
+
+   Used by: frac rate of growth demo experience
+
+Min Pilot Experience for Learning: Converter
+   = 
+   Units: years
+   Documentation: DEFINITION:  Sets threshold before calculating rate of growth in pilot experience, and hence, learning. 
+
+UNITS:  yr
+
+TYPE:  Ass'n
+
+SOURCE:  
+
+COMMENT:  This removes discontinuities in calculating rate of doubling when first operation comes on line
+
+   Used by: frac rate of growth pilot experience
+
+nominal attractiveness C: Converter
+   = EXP(k_C+invest_attractiveness_weighting*NPV_rel_to_a_million_C[TechnologyPlatform])
+   Units: Unitless
+   Documentation: DEFINITION: attractiveness of investment in full commercial scale plants by technology based on economic considerations alone
+ 
+UNITS:
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: attractiveness C
+
+nominal attractiveness P: Converter
+   = EXP(k_P+invest_attractiveness_weighting* NPV_rel_to_a_million_P[TechnologyPlatform])
+   Units: Unitless
+   Documentation: DEFINITION: attractiveness of investment in pioneer scale plants by technology based on economic considerations alone
+ 
+UNITS:
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: attractiveness P
+
+Nominal Pioneer FCI: Converter
+   = Mature_Industry_FCI[TechnologyPlatform]*pioneer_cost_scale_factor
+   Units: US Dollars
+   Documentation: DEFINITION: Capital Investment for the pioneer-scale project when industry is mature.
+
+UNITS:   $
+
+TYPE: calculated value
+
+SOURCE: 
+
+COMMENT:   
+
+   Used by: Expected FCI P
+
+Nominal Plant Utilization Factors C: Converter
+   = Cost_to_Price_Ratio_C[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: fractional utilization of output capacity for commercial scale facilities
+ 
+UNITS: unitless
+ 
+TYPE: internal calculation/scenario?
+ 
+SOURCE: 
+ 
+COMMENTS: driven by aggregate average "price-cost ratios".  as price declines relative to vbl cost of production, utilization drops.
+   Used by: Plant Utilization Factors C, Reqd Annual FS Supply C
+
+Nominal Plant Utilization Factors P: Converter
+   = Cost_to_Price_Ratio_P[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: fractional utilization of output capacity for pioneer scale facilities
+ 
+UNITS: unitless
+ 
+TYPE: internal calculation/scenario
+ 
+SOURCE: 
+ 
+COMMENTS: driven by aggregate average "price-cost ratios".  as price declines relative to vbl cost of production, utilization drops.
+   Used by: Plant Utilization Factors P, Reqd Annual FS Supply P
+
+NPV Investment C: Converter
+   = NPV_Revs_Net_of_Op_Cost_C[TechnologyPlatform]-
+(Initial_Equity_Investment_C[TechnologyPlatform]+PV_Loan_Payment_C[TechnologyPlatform]+NPV_Taxes_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Net Present Value of "next" commercial-scale project, discounted to "now" in simulation
+
+UNITS:  US Dollars
+
+TYPE: Calculation; Sector Interface
+
+SOURCE: N/A
+
+COMMENT: Sums the input NPV calculations to provide overall NPV for the project.
+
+   Used by: NPV rel to a million C
+
+NPV Investment P: Converter
+   = NPV_Revs_Net_of_Op_Cost_P[TechnologyPlatform]-
+(Initial_Equity_Investment_p[TechnologyPlatform]+NPV_Taxes_P[TechnologyPlatform]+PV_Loan_Payment_P[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Net Present Value of  incremental pioneer-scale project, discounted to "now" in simulation
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation
+
+SOURCE: N/A
+
+COMMENT: Sums the input PV calculations to provide overall NPV for the project.
+
+   Used by: NPV rel to a million P
+
+NPV rel to a million C: Converter
+   = NPV_Investment_C[TechnologyPlatform]/one_million
+   Units: million USD
+   Documentation: DEFINITION: Scales NPV of commercial scale project by normalizing by 1 million.
+
+UNITS:  million USD
+
+TYPE: Calculation
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: nominal attractiveness C
+
+NPV rel to a million OTHER: Converter
+   = 30
+   Units: million USD
+   Documentation: DEFINITION: Assumed NPV (rel to a million $) associated with other usesof plant construction capacity
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: attr OTHER
+
+NPV rel to a million P: Converter
+   = (NPV_Investment_P[TechnologyPlatform]/one_million)
+   Units: million USD
+   Documentation: DEFINITION: Scales NPV of incremental pioneer-scale project by normalizing by 1 million.
+
+UNITS:  Million USD
+
+TYPE: Calculation
+
+SOURCE: N/A
+
+COMMENT: 
+
+   Used by: nominal attractiveness P
+
+NPV Revs Net of Op Cost C: Converter
+   = Exp_Revs_Net_of_Op_Cost[TechnologyPlatform]*(discount_factor_3_C[TechnologyPlatform]-discount_factor_DCS_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of revenues net of operating cost, assuming constant net over commercial-scale plant operational lifetime ($)
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Using expected rev net of operating cost, this eq'n does a PV calculation for the entire project length (using discount factor 3), and then subtracts the PV associated with design, construction, startup, leaving the PV of the expected rev net of op cost for the time that the project is fully operational.  Assumes net 0 for rev net of op cost during start-up period.
+
+   Used by: NPV Investment C
+
+NPV Revs Net of Op Cost P: Converter
+   = Expected_Revs_Net_of_Op_Cost_P[TechnologyPlatform]*(discount_factor_3_P[TechnologyPlatform]-discount_factor_DCS_P[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of revenues net of operating cost, assuming constant net over pioneer plant operational lifetime 
+
+UNITS:   US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Using expected rev net of operating cost, this eq'n does a PV calculation for the entire project length (using discount factor 3), and then subtracts the PV associated with design, construction, startup, leaving the PV of the expected rev net of op cost for the time that the project is fully operational.  Assumes net 0 for rev net of op cost during start-up period.
+
+   Used by: NPV Investment P
+
+NPV Taxes 1 C: Converter
+   = Expected_Tax_1_C[TechnologyPlatform]*(discount_factor_1_C[TechnologyPlatform]-discount_factor_DCS_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes during first years of plant productive life.  Specific time for NPV calculation is controlled by SMALLER of depreciation period or loan term
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Calculation does a NPV for taxes associated with Design, Construction, Startup + smaller of loan term or depreciation period, then subtracting NPV associated with period of design, construction, startup, leaving NPV associated with beginning years. 
+   Used by: NPV Taxes C
+
+NPV Taxes 1 P: Converter
+   = Expected_Tax_1_P[TechnologyPlatform]*(discount_factor_1_P[TechnologyPlatform]-discount_factor_DCS_P[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes during first years of plant productive life.  Specific time for NPV calculation is controlled by SMALLER of depreciation period or loan term
+
+UNITS:   US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Calculation does a NPV for taxes associated with Design, Construction, Startup + smaller of loan term or depreciation period, then subtracting NPV associated with period of design, construction, startup, leaving NPV associated with beginning years. 
+   Used by: NPV Taxes P
+
+NPV Taxes 2 C: Converter
+   = Expected_Tax_2_C[TechnologyPlatform]*(discount_factor_2_C[TechnologyPlatform]-discount_factor_1_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes during portion portion of commercial-scale plant lifetime AFTER depreciation OR loan period--whichever is shorter-- and BEFORE both loan repayment and depreciation are completed 
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Calculation does a NPV for project taxes up to end of depreciation period or loan term (whichever is LARGER), and then subtracts NPV associated with end of depreciation period or loan term (whichever is SMALLER), leaving NPV of taxes associated with this middle period
+   Used by: NPV Taxes C
+
+NPV Taxes 2 P: Converter
+   = Expected_Tax_2_P[TechnologyPlatform]*(discount_factor_2_P[TechnologyPlatform]-discount_factor_1_P[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes during portion portion of plant lifetime AFTER depreciation OR loan period--whichever is shorter-- and BEFORE both loan repayment and depreciation are completed
+
+UNITS:   US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Calculation does a NPV for project taxes up to end of depreciation period or loan term (whichever is LARGER), and then subtracts NPV associated with end of depreciation period or loan term (whichever is SMALLER), leaving NPV of taxes associated with this middle period
+   Used by: NPV Taxes P
+
+NPV Taxes 3 C: Converter
+   = Expected_Tax_3_C[TechnologyPlatform]*(discount_factor_3_C[TechnologyPlatform]-discount_factor_2_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes during portion portion of plant lifetime AFTER depreciation and loan period 
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Calculation does a NPV for entire project length, subtracting NPV associated with period of depreciation and/or loan, leaving NPV associated with "out" years.
+   Used by: NPV Taxes C
+
+NPV Taxes 3 P: Converter
+   = Expected_Tax_3_P[TechnologyPlatform]*(discount_factor_3_P[TechnologyPlatform]-discount_factor_2_P[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes during portion portion of plant lifetime AFTER depreciation and loan period 
+
+UNITS:   US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Calculation does a NPV for entire project length, subtracting NPV associated with period of depreciation and/or loan, leaving NPV associated with "out" years.
+   Used by: NPV Taxes P
+
+NPV Taxes C: Converter
+   = NPV_Taxes_1_C[TechnologyPlatform]+NPV_Taxes_2_C[TechnologyPlatform]+NPV_Taxes_3_C[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of taxes associated with commercial-scale plant operation 
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Sums together the NPV of taxes associated with periods 1, 2, 3 of project lifetime.  
+   Used by: NPV Investment C
+
+NPV Taxes P: Converter
+   = NPV_Taxes_1_P[TechnologyPlatform]+NPV_Taxes_2_P[TechnologyPlatform]+NPV_Taxes_3_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates PV of taxes associated with plant operation 
+
+UNITS:   US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Sums together the PV of taxes associated with periods 1, 2, 3 of project lifetime.  
+   Used by: NPV Investment P
+
+Number of Doublings of Cume Output: Stock
+   = 
+   Units: doubling
+   Documentation: Definition:  Tracks the cumulative number of doublings of commercial-scale output 
+
+Units:  Doubling
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+
+Number of Doublings of Demo Experience: Stock
+   = 
+   Units: doubling
+   Documentation: Definition:  Tracks the cumulative number of doublings of demo-scale experience 
+
+Units:  Doubling
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+
+Number of Doublings of Pilot Experience: Stock
+   = 
+   Units: doubling
+   Documentation: Definition:  Tracks the cumulative number of doublings of pilot-scale experience 
+
+Units:  Doubling
+
+Type:  Internal Calculation
+
+Source:  N/A
+ 
+Comments:  
+
+
+number of plants to start: Converter
+   = INT(Plant_Start_Accumulator[TechnologyPlatform])
+   Units: Project
+   Documentation: DEFINITION: Ensures that discrete quantity ejected from "batchifier" is an integer value
+ 
+UNITS: projects
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: commercial plant initiation logic
+
+number pioneer plants to start: Converter
+   = INT(Pioneer_Plant_Start_Batchifier[TechnologyPlatform])
+   Units: Project
+   Documentation: DEFINITION: Ensures that discrete quantity ejected from "batchifier" is an integer value
+ 
+UNITS: projects
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: pioneer plant initiation logic
+
+one: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: one
+ 
+UNITS: unitless
+ 
+TYPE: constant law of nature
+ 
+SOURCE: 3 dog night
+ 
+COMMENTS: loneliest number that you'll ever do.
+   Used by: commercial maturity gap, pilot maturity gap, demo maturity gap
+
+one billion: Converter
+   = 1000000000
+   Units: per billion
+   Documentation: DEFINITION:  a billion
+
+UNITS:  per billion
+
+TYPE:  law of nature
+
+SOURCE:  
+
+COMMENT: used to convert units from nominal units to billions, and from billions to nominal units
+   Used by: output bb gpy by tech
+
+one dollar per gal: Converter
+   = 1
+   Units: USD per gallon
+   Documentation: Definition:   conversion factor used to set subsidies to correct units.
+
+Units:  USD/gal
+
+Type:  conversion factor
+
+Source:  N/A
+
+Comments:  
+   Used by: PoP Price Subs Logic
+
+one dollar per ton: Converter
+   = 1
+   Units: USD per ton
+   Documentation: Definition:   conversion factor used to set subsidies to correct units.
+
+Units:  USD/ton
+
+Type:  conversion factor
+
+Source:  N/A
+
+Comments:  
+   Used by: FS Subs Logic P, FS Subs Logic C
+
+one hundred %: Converter
+   = 100
+   Units: percent
+   Documentation: DEFINITION: 100
+ 
+UNITS: 
+ 
+TYPE: Truism!
+ 
+SOURCE: 
+ 
+COMMENTS: 
+ 
+
+   Used by: debt interest rate as frac, Req'd Rate of Return
+
+one million: Converter
+   = 1000000
+   Units: per million
+   Documentation: DEFINITION:  a million
+
+UNITS:  per million
+
+TYPE:  law of nature
+
+SOURCE:  
+
+COMMENT: used to convert units from nominal units to millions and from millions to nominal units
+   Used by: NPV rel to a million C, NPV rel to a million P, Total Annual Req'd Cellulosic FS, Total Annual Reqd FS Pipeline
+
+one project: Converter
+   = 1
+   Units: Project
+   Documentation: DEFINITION:single project
+ 
+UNITS: projects
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: use of this variable simplifies unit analysis in various sectors of the model.  Broadly speaking, productivity concept are taken as -per project- vbls implicitly.  This variable then comes into play to ensure correct units when scaling up/down to/from industry/individual plant analysis.
+   Used by: Output Capacity C, yrly Loan Guarantee Flux P, yrly Loan guarantee flux C, yrly FCI subs P, yrly FCI subs C, Output Capacity P, Reqd FS supply Pipeline C, Reqd FS supply Pipeline P, Output Capacity Pipeline P, Output Capacity Pipeline C
+
+OnLine C: Stock
+   = 
+   Units: Project
+   Documentation: DEFINITION:  Tracks full commercial scale operations that are on line, capable of producing product, by technology 
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: increase in PY commercial industry, retirements C, Plants On Line Equivalent C, Avg PY C
+
+OnLine P: Stock
+   = 
+   Units: Project
+   Documentation: DEFINITION:  Tracks pioneer-scale operations that are on line, capable of producing product, by technology
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: Avg PY P, retirements P, Output Capacity P
+
+Op Experience Per Year: Converter
+   = 1
+   Units: yr/(project-yr)
+   Documentation: DEFINITION: years of experience generated per year of operation, for each operation in operation.  Applies to Demo and Pilot Operations
+ 
+UNITS: experience per project-yr
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: Value of 1 assumes that operation is being utilized fully.  May want to use separate values for pilot, demo, to reflect different utilization rates.
+   Used by: logging pilot experience, logging demo experience
+
+OpCost Input: Converter
+   = 
+   Units: Unitless
+   Used by: OpCost Multiplier
+
+OpCost Multiplier: Converter
+   = OpCost_Input
+   Units: Unitless
+   Used by: Expected Op Cost, Expected Op Cost Pioneer
+
+Other rev net of vbl cost per gal C: Converter
+   =  IF "Avg_Plant_Output_gal\\yr_C"[TechnologyPlatform] > 0 THEN
+Other_rev_net_of_vbl_op_cost_C[TechnologyPlatform] / "Avg_Plant_Output_gal\\yr_C"[TechnologyPlatform]
+ELSE 0
+   Units: USD per gallon
+   Documentation: DEFINITION: calculates "other" revenues net of operating costs, on a per gallon of production basis for commercial scale facilities
+ 
+UNITS: USD per gallon
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: component of cost term for price/cost ratio
+   Used by: Cost to Price Ratio C
+
+Other rev net of vbl cost per gal P: Converter
+   =  IF Avg_Plant_Output_gal_per_yr_P[TechnologyPlatform] > 0 THEN
+Other_rev_net_of_vbl_op_cost_P[TechnologyPlatform] / Avg_Plant_Output_gal_per_yr_P[TechnologyPlatform]
+ELSE 0
+   Units: USD per gallon
+   Documentation: DEFINITION: calculates "other" revenues net of operating costs, on a per gallon of production basis for pioneer scale facilities
+ 
+UNITS: USD per gallon
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: component of cost term for price/cost ratio
+   Used by: Cost to Price Ratio P
+
+Other rev net of vbl op cost C: Converter
+   = (Exp_Other_Coproduct_Sales_Rev_C[TechnologyPlatform] + Exp_Power_Sales_Rev_C[TechnologyPlatform]) - Expected_Other_VBL_Op_Cost_C[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: calculates "other" revenues net of operating costs for commercial scale facilities
+ 
+UNITS: USD per gallon
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: input to price/cost ratio calculation
+   Used by: Other rev net of vbl cost per gal C
+
+Other rev net of vbl op cost P: Converter
+   = (Expected_Other_Coproduct_Sales_Rev_P[TechnologyPlatform] + Expected_Power_Sales_Rev_P[TechnologyPlatform]) - Expected_Other_VBL_Op_Cost_P[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: calculates "other" revenues net of operating costs for pioneer scale facilities
+ 
+UNITS: USD per gallon
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: input to price/cost ratio calculation
+   Used by: Other rev net of vbl cost per gal P
+
+output bb gpy by tech: Flow
+   = (Output_gpy_by_Technology[TechnologyPlatform])/one_billion
+   Units: billion GPY
+   Documentation: Definition:   Product output from pioneer + full commercial scale commercial operations
+
+Units:  Billion GPY
+
+Type:  Internal calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: frac rate of growth in industry output
+
+Output cap by Tech: Converter
+   = (Output_Capacity_C[TechnologyPlatform] )+ (Output_Capacity_P[TechnologyPlatform])
+   Units: GPY
+   Documentation: DEFINITION: industry output capacity, across regions by technology
+ 
+UNITS: gal/yr
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: rolls up output across regions
+   Used by: UTIL by tech
+
+Output Capacity C: Converter
+   = Plants_On_Line_Equivalent_C[TechnologyPlatform]*("Avg_Plant_Output_gal\\yr_C"[TechnologyPlatform]/one_project)
+   Units: GPY
+   Documentation: DEFINITION:  Calculates total full commercial scale industry output per year under full utilization, by technology
+
+UNITS:  GPY (gallons per year)
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note use of "one project" to resolve implicit per project units in input.
+
+   Used by: Actual Output gpy C, UTIL by tech C, Output cap by Tech, Reqd Annual FS Supply C, Tot C Cellulosic Cap by Tech by Region
+
+Output Capacity P: Converter
+   = OnLine_P[TechnologyPlatform]*(Avg_Plant_Output_gal_per_yr_P[TechnologyPlatform]/one_project)
+   Units: GPY
+   Documentation: DEFINITION:  Calculates total pioneer scale industry output per year under full utilization, by technology
+
+UNITS:  GPY (gallons per year)
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Note use of "one project" to resolve implicit per project units in input.
+
+   Used by: Actual Output gpy P, UTIL by tech P, Output cap by Tech, Reqd Annual FS Supply P, Tot P Cap by Tech by Region
+
+Output Capacity Pipeline C: Converter
+   = Pipeline_C[TechnologyPlatform]*(Pipeline_Potential_Plant_Output_gal_per_yr_C[TechnologyPlatform]/one_project)
+   Units: GPY
+   Documentation: DEFINITION:total commercial scale etoh capacity in the prod'n pipeline for commercial scale facilities
+ 
+UNITS: GPY
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Tot C Cellulosic Cap by Tech by Region
+
+Output Capacity Pipeline P: Converter
+   = Pipeline_P[TechnologyPlatform]*("Pipeline_Potential_Plant_Output_gal\\yr_P"[TechnologyPlatform]/one_project)
+   Units: GPY
+   Documentation: DEFINITION:total pioneer scale production capacity in the pipeline for pioneer scale facilities
+ 
+UNITS: GPY
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Tot P Cap by Tech by Region
+
+Output gpy by Technology: Converter
+   = Actual_Output_gpy_C[TechnologyPlatform] + Actual_Output_gpy_P[TechnologyPlatform]
+   Units: GPY
+   Documentation: DEFINITION:  Rolls up output for pioneer + full commercial scale plants by technology ( and across all regions for modules with regions)
+
+UNITS:  GPY  (gallons per year)
+
+TYPE:  Sector Interface
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: yrly prodn subs, output bb gpy by tech, UTIL by tech
+
+P industry FS thruput tpy: Converter
+   = IF Avg_PY_P[TechnologyPlatform] >0 
+THEN  Actual_Output_gpy_P[TechnologyPlatform]/Avg_PY_P[TechnologyPlatform]
+ELSE 0
+   Units: ton per year
+   Documentation:  DEFINITION:  flow of annual feedstock consumption by pioneer conversion facilities, by technology
+ 
+UNITS: ton/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: yrly fs subs P
+
+P Success: Converter
+   = Mature_Industry_P_Success[TechnologyPlatform]*State_of_the_Industry_Multipliers[TechnologyPlatform,PSuccess]
+   Units: Unitless
+   Documentation: DEFINITION:  Applies multipliers reflecting current industry maturity to provide probability estimate that plant successfully start up
+
+UNITS: Unitless
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+
+COMMENTS:  Currently not driving any model dynamics.
+
+
+
+per plant L G esposure P: Converter
+   = Cume_Loan_Payment_P[TechnologyPlatform] * Loan_Guarantee_Logic_P[TechnologyPlatform]
+   Units: US Dollars
+   Documentation:  DEFINITION:  Expected per-plant govt loan guarantee exposure for pioneer-scale plants
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: yrly Loan Guarantee Flux P
+
+per plant L G exposure C: Converter
+   = Cume_Loan_Payment_C[TechnologyPlatform] * Loan_Guarantee_Logic_C[TechnologyPlatform]
+   Units: US Dollars
+   Documentation:  DEFINITION:  Expected per-plant govt loan guarantee exposure for full-commercial-scale plants
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: yrly Loan guarantee flux C
+
+pilot dev time: Converter
+   = 0.75
+   Units: years
+   Documentation: DEFINITION: Dwell time between initiation and completion of pilot-scale development effort
+ 
+UNITS: yr
+ 
+TYPE: ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: 
+
+Pilot Efforts in Development: Stock
+   = 
+   Units: Project
+   Documentation: Definition: Conveyor representing pilot projects that have begun but not completed development
+
+Units: Projects
+
+Type:  Internal Calculation
+
+Source:  n/a
+
+Comments:  
+
+
+pilot learning logic: Flow
+   = rate_of_doubling_pilot_experience[TechnologyPlatform]*pilot_maturity_gap[TechnologyPlatform]*(1-Pilot_Progress_Ratios[TechnologyPlatform] * ProgRatio_Multiplier)
+
+{Note:  Unit checking in STELLA 10.0.6 fails to impute correct units, apparently, to the to value "1" in this calculation: 
+1/yr = doubling/yr * 1/doubling * unitless }
+   Units: Per Year
+   Documentation: Definition:  Learning curve logic calculates flow that increases pilot-scale maturity.  Applies  quantity (1-progress ratio) to maturity gap and rate of doubling, to generate increase in maturity.  Each doubling of cumulative output drives a constant percentage change in the gap between "current" and mature index of maturity.
+
+Units: 1/yr
+
+Type:  Internal Calculation
+
+Source N/A
+
+Comments:  
+STELLA 10.0.6 fails to successfully parse units for this flow, likely the result of the existence of the quantity (1-progress ratio) in the equation.
+
+Pilot Maturity: Stock
+   = Initial_Indices_of_Pilot_Maturity[TechnologyPlatform] * Initial_Pilot_Demo_Maturity_Multiplier
+   Units: Unitless
+   Documentation: Definition:  Stock tracks level of maturity of pilot scale operations, by technology
+
+Units:   Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: pilot maturity gap, Pilot Multipliers
+
+pilot maturity gap: Converter
+   = one-Pilot_Maturity[TechnologyPlatform]
+   Units: Unitless
+   Documentation: Definition: Difference between maximum maturity (1) and actual maturity at pilot scale operations
+
+Units: Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: pilot learning logic
+
+Pilot Multipliers: Converter
+   = Mature_Pilot_Multipliers[TechAttribute]*Pilot_Maturity[TechnologyPlatform] +
+Early_Pilot_Multipliers[TechAttribute]*(1-Pilot_Maturity[TechnologyPlatform])
+   Units: Unitless
+   Documentation: Definition: Translates pilot-scale maturity into a set of multipliers that characterize the "current" state of technology from the perspective of piloting. Captured as weighted average, with weighting factor dynamically determined by indices of pilot maturity.  After winding through multiple learning curves, resultant multiplier is applied to mature industry values to define attributes of each technology.
+
+Units: Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: Demo Multipliers
+
+pilot op time: Converter
+   = 1.5
+   Units: years
+   Documentation: DEFINITION: Time that pilot-scale development effort spends "on line"
+ 
+UNITS: yr
+ 
+TYPE: ass'n--ingoing ass'n is 2x development time
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: 
+
+Pilot Progress Ratios: Converter
+   = 
+   Units: 1/doubling
+   Documentation: DEFINITION:  Roughly, the fraction of potential change in pilot effort that is REMAINING with each doubling of cumulative pilot experience.  1- progress ratio tells the rate of gap-elimination accompanying each doubling of output or experience.  Drives level of maturity of pilot effort, by industry
+
+UNITS: 1/doubling
+
+TYPE:  Scenario ass'n
+
+SOURCE:  
+
+COMMENT: 
+   Used by: pilot learning logic
+
+Pilot Scale Operations: Stock
+   = 
+   Units: Project
+   Documentation: Definition: Represents the number of pilot scale operations that are "on line" and generating learning.
+
+Units: Projects
+
+Type:  Internal calculation
+
+Source:  n/a
+
+Comments:  
+
+   Used by: logging pilot experience
+
+pilot start: Converter
+   = TIME
+   Units: project/yr
+   Documentation: Definition: Scenario input driving initiation of pilot-scale operations
+
+Units: Projects per year
+
+Type:  User-Defined Input
+
+Source:  n/a
+
+Comments:  Note use of discontinuous line segments in graphical function
+
+
+
+   Used by: initiating pilot development
+
+pioneer capacity scale factor: Converter
+   = 0.35
+   Units: Unitless
+   Documentation: DEFINITION:  Scaling factor that relates pioneer-scale to commercial scale capacity
+
+UNITS:  Unitless
+
+TYPE:  
+
+SOURCE:  derived--as ratio of 70tpd to 2000tpd pioneer vs commercial scale plant
+
+COMMENT:  
+   Used by: Mature FS Thruput Capacity P
+
+pioneer coproduct scale factor: Converter
+   = 0
+   Units: Unitless
+   Documentation: DEFINITION:  Scaling factor that relates pioneer-scale to commercial scale co-product revenues
+
+UNITS:  unitless
+
+TYPE:  
+
+SOURCE:  assumed to be zero
+
+COMMENT:  
+   Used by: Expected Power Sales Rev P, Expected Other Coproduct Sales Rev P
+
+pioneer cost scale factor: Converter
+   = 0.6
+   Units: Unitless
+   Documentation: DEFINITION:  Scaling factor that relates pioneer-scale to commercial scale costs
+
+UNITS:  Unitlless
+
+TYPE:  
+
+SOURCE:  assumed.  Needs to be larger than capacity scale factor, otherwise get diseconomies of scale.
+
+COMMENT:  
+   Used by: Expected Other VBL Op Cost P, Expected Fixed Op Cost P, Nominal Pioneer FCI
+
+pioneer plant initiation logic: Flow
+   = PULSE(number_pioneer_plants_to_start[TechnologyPlatform])
+   Units: project/yr
+   Documentation: DEFINITION: pulses out integer value from batchifier whenever value in batchifier is >=1
+ 
+UNITS: projects/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: Pulse is set to fire each dt.  Quantity fired depends on size of batchifier stock.  
+
+   Used by: yrly Loan Guarantee Flux P, yrly FCI subs P, initating P
+
+pioneer plant planning logic: Flow
+   = use_exogenous_commercial_scenario[TechnologyPlatform] * pioneer_start[TechnologyPlatform] + 
+use_endogenous_commercial_logic[TechnologyPlatform] * desired_p_starts_per_yr[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION: Captures continuous pressure to add plants to the system
+ 
+UNITS: projects/year
+
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: part of structure that takes continuous pressure to add plants and transforms into discrete trigger to add a plant.
+ 
+
+Pioneer Plant Start Batchifier: Stock
+   = 0
+   Units: Project
+   Documentation: DEFINITION: Stock that accumulates continuous signal and then ejects discrete quantity.
+ 
+UNITS: projects
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: number pioneer plants to start
+
+pioneer start: Converter
+   = TIME
+   Units: project/yr
+   Documentation: DEFINITION: Logic that drives exogenously specified pioneer plant scenario into the system
+ 
+UNITS: projects/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: pioneer plant planning logic
+
+Pipeline C: Converter
+   = "In_Design&Cons_C"[TechnologyPlatform] + Starting_Up_C[TechnologyPlatform]
+   Units: Project
+   Documentation: DEFINITION: Tracks commercial-scale operations that are in design, construction, or startup
+ 
+UNITS: projects
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS:
+   Used by: Reqd FS supply Pipeline C, Avg PY Pipeline C, Output Capacity Pipeline C
+
+Pipeline P: Converter
+   = "In_Design&Cons_P"[TechnologyPlatform] + Starting_Up_P[TechnologyPlatform]
+   Units: Project
+   Documentation: DEFINITION: Tracks pioneer-scale operations that are in design, construction, or startup
+ 
+UNITS: project
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS:
+   Used by: Reqd FS supply Pipeline P, Avg PY Pipeline P, Output Capacity Pipeline P
+
+Pipeline Potential Plant Output gal per yr C: Converter
+   = Avg_Plant_Output_gpd_pipeline_C[TechnologyPlatform]*Days_per_Year_Online
+   Units: GPY
+   Documentation: DEFINITION: commercial -scale per-plant potential output per year by technology--for what's in the pipeline
+ 
+UNITS: GPY
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+   Used by: Output Capacity Pipeline C
+
+Pipeline Potential Plant Output gal\yr P: Converter
+   = Avg_Plant_Output_gpd_pipeline_P[TechnologyPlatform]*Days_per_Year_Online
+   Units: GPY
+   Documentation: DEFINITION: pioneer-scale per-plant potential output per year by technology--for what's in the pipeline
+ 
+UNITS: GPY
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+   Used by: Output Capacity Pipeline P
+
+Plant Economic Lifetime: Converter
+   = 20
+   Units: years
+   Documentation: DEFINITION: Plant Economic Lifetime
+ 
+UNITS: years
+ 
+TYPE: 
+ 
+SOURCE: assumed
+ 
+COMMENTS: used for npv calculation
+
+   Used by: total project length C, total project length P
+
+Plant Start Accumulator: Stock
+   = 0
+   Units: Project
+   Documentation: DEFINITION: Stock that accumulates continuous signal and then ejects discrete quantity.
+ 
+UNITS: projects
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: number of plants to start
+
+Plant Utilization Factors C: Converter
+   = Nominal_Plant_Utilization_Factors_C[TechnologyPlatform] * Feedstock_Constraint_on_Utilization[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: fractional utilization of output capacity at full-commercial scale
+ 
+UNITS: unitless
+ 
+TYPE: sector interface
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Actual Output gpy C
+
+Plant Utilization Factors P: Converter
+   = Nominal_Plant_Utilization_Factors_P[TechnologyPlatform] * Feedstock_Constraint_on_Utilization[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: fractional utilization of output capacity at pioneer-commercial scale
+ 
+UNITS: unitless
+ 
+TYPE: sector interface
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Actual Output gpy P
+
+Plants On Line Equivalent C: Converter
+   = Starting_Up_C[TechnologyPlatform]*Util_rate_for_starting_up+OnLine_C[TechnologyPlatform]
+   Units: Project
+   Documentation: DEFINITION:  Calculates "effective" number of plants on line by applying an overall utilization rate to those plants in startup, and then adding all on-line plants.
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: Output Capacity C
+
+PoD PoP gasoline Offset: Converter
+   = 0.15
+   Units: USD per gallon
+   Documentation: DEFINITION:  assumed spread between PoP and PoD gasoline prices.  PoD is point of Distribution and PoP is point of production.
+
+UNITS: USD/gal
+
+TYPE:  ass'n
+
+SOURCE:  
+
+COMMENT:  
+   Used by: Gasoline POP Price
+
+Policy End: Converter
+   = 
+   Units: years
+   Documentation: DEFINITION: Defines time that conversion policies end
+
+UNITS: Years
+
+TYPE: User Defined Input
+
+SOURCE: n/a
+
+COMMENTS: 
+
+
+   Used by: Policy time constraints
+
+Policy Start: Converter
+   = 2011
+   Units: years
+   Documentation: DEFINITION: Defines time that conversion policies start
+
+UNITS: Years
+
+TYPE: User Defined Input
+
+SOURCE: n/a
+
+COMMENTS: 
+
+   Used by: Policy time constraints
+
+Policy Switch: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: Arrayed switch (0/1) that activates/deactivates various policies around subsidies and loan guarantees
+
+UNITS: Unitless
+
+TYPE: User Defined Input
+
+SOURCE: n/a
+
+COMMENTS: Switch must be "on" and constraints must be met for initiatives to propagate through system
+
+   Used by: PoP Price Subs Logic, FS Subs Logic P, FS Subs Logic C, FCI Subs Logic P, FCI Subs Logic C, Loan Guarantee Logic P, Loan Guarantee Logic C
+
+Policy time constraints: Converter
+   = IF TIME >= Policy_Start[ConversionPolicy,TechnologyPlatform] 
+AND TIME <= Policy_End[ConversionPolicy,TechnologyPlatform] 
+THEN 1
+ELSE 0
+   Units: Unitless
+   Documentation: DEFINITION: Logic that activates conversion policies if they are in the time window provided by "start" and "end" times
+
+UNITS: Unitless
+
+TYPE: Internal Calculation
+
+SOURCE: n/a
+
+COMMENTS: Policy switch must be "on" and constraints must be met for initiatives to propagate through system
+
+   Used by: PoP Price Subs Logic, FS Subs Logic P, FS Subs Logic C, FCI Subs Logic P, FCI Subs Logic C, Loan Guarantee Logic P, Loan Guarantee Logic C
+
+PoP Price Subs Logic: Converter
+   = Policy_Switch[Price,TechnologyPlatform] * Policy_time_constraints[Price,TechnologyPlatform] * Subsidy_Amt[Price] * one_dollar_per_gal
+   Units: USD per gallon
+   Documentation: DEFINITION: Logic that controls activation of per-gallon product subsidy accruing at point of production.  Logic controlled by switch, time constraints, and subsidy amount
+
+UNITS: USD per gallon
+
+TYPE: 
+
+SOURCE: n/a
+
+COMMENTS: 
+
+
+   Used by: yrly prodn subs, Expected Price after Subs
+
+PoP Unsubsidized Price: Converter
+   = Gasoline_POP_Price * gasoline_conversion_technology_multiplier[TechnologyPlatform]
+   Units: USD per gallon
+   Documentation: DEFINITION:  galculated  PoP product  price based on scenario input and assumed spread between PoP and PoD, as modified by technology specific multiplier that scales PoD gasoline price to product produced by each technology.
+
+UNITS: USD/gal
+
+TYPE:  internal calculation
+
+SOURCE:  
+
+COMMENT:  
+   Used by: Expected Price after Subs
+
+PreCom Inv Input: Converter
+   = 1
+   Units: Unitless
+   Used by: PreCom Invest Multiplier
+
+PreCom Invest Multiplier: Converter
+   = PreCom_Inv_Input
+   Units: Unitless
+   Used by: initiating pilot development, initiating demo development
+
+PreCom Maturity Input: Converter
+   = 
+   Units: Unitless
+   Used by: Initial Pilot Demo Maturity Multiplier
+
+ProgRatio Input: Converter
+   = 
+   Units: Unitless
+   Used by: ProgRatio Multiplier
+
+ProgRatio Multiplier: Converter
+   = ProgRatio_Input
+   Units: Unitless
+   Used by: learning logic, pilot learning logic, demo learning logic
+
+PV Loan Payment C: Converter
+   = Annual_Loan_Payment_C[TechnologyPlatform]*(discount_factor_loan_C[TechnologyPlatform]-discount_factor_DCS_C[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates PV of loan payments over length of loan for commercial-scale projects 
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Using annual loan payment, this eq'n does a PV calculation for the Design/Construction/Startup phase + Loan term, and then subtracts the PV associated with design, construction, startup, leaving the NPV of loan payments over period loan is repaid.  Note that this assumes no loan payment until plant is fully operational.
+   Used by: NPV Investment C
+
+PV Loan Payment P: Converter
+   = Annual_Loan_Payment_P[TechnologyPlatform]*(discount_factor_loan_P[TechnologyPlatform]-discount_factor_DCS_P[TechnologyPlatform])
+   Units: US Dollars
+   Documentation: DEFINITION: Calculates NPV of loan payments over length of loan 
+
+UNITS:  US Dollars
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Using annual loan payment, this eq'n does a PV calculation for the Design/Construction/Startup phase + Loan term, and then subtracts the PV associated with design, construction, startup, leaving the NPV of loan payments over period loan is repaid.  Note that this assumes no loan payment until plant is fully operational.
+   Used by: NPV Investment P
+
+PY D&C to Startup C: Flow
+   = "completing_D&C_C"[TechnologyPlatform]*"Avg_PY_D&C_C"[TechnologyPlatform]
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Co-flow of process yield associated with each new plant that completes design and construction and thus begins start-up
+
+UNITS: gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+PY D&C to Startup P: Flow
+   = "completing_D&C_P"[TechnologyPlatform]*"Avg_PY_D&C_P"[TechnologyPlatform]
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Co-flow of process yield associated with each new plant that completes design and construction and thus begins start-up
+
+UNITS: gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+PY in Design&Cons P: Stock
+   = "In_Design&Cons_P"[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: project-gal/ton
+   Documentation: DEFINITION:  Part of co flow structure that keeps track of total weight of process yield associated with plants in design and construction
+
+UNITS:  project-gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+
+COMMENTS:  Analytic Initialization ensures consistency between process yield and projects
+   Used by: Avg PY D&C P, PY Pipeline P
+
+PY in In Design&Cons C: Stock
+   = "In_Design&Cons_C"[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: project-gal/ton
+   Documentation: DEFINITION:  Part of co flow structure that keeps track of total weight of process yield associated with plants in design and construction
+
+UNITS:  project-gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Analytic Initialization ensures consistency between process yield and projects
+
+   Used by: Avg PY D&C C, PY Pipeline C
+
+PY in Startup C: Stock
+   = 0
+   Units: project-gal/ton
+   Documentation: DEFINITION:  Part of co flow structure that keeps track of total weight of process yield associated with plants in startup
+
+UNITS:  project-gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Need to initialize this stock "by hand" if you provide nonzero value for starting up stock
+
+   Used by: PY Pipeline C
+
+PY in Startup P: Stock
+   = 0
+   Units: project-gal/ton
+   Documentation: DEFINITION:  Part of co flow structure that keeps track of total weight of process yield associated with plants in startup
+
+UNITS:  project-gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Need to initialize this stock "by hand" if you provide nonzero value for starting up stock
+
+   Used by: PY Pipeline P
+
+PY influx C: Flow
+   = initiating_C[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Eq'n samples "state of the industry" process yield, applying it to influx of full commercial-scale plants that begin D+C.  Resultant downstream structure used to track process yield for commercial-scale plants.
+
+UNITS: gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+PY influx P: Flow
+   = initating_P[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Eq'n samples "state of the industry" process yield, applying it to influx of pioneer-scale plants that begin D+C.  Resultant downstream structure used to track process yield for Pioneer-scale plants.
+
+UNITS: gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+PY OnLine C: Stock
+   = OnLine_C[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: project-gal/ton
+   Documentation: DEFINITION: Tracks the "total" process yield associated with plants in operation
+ 
+UNITS: (gal/ton)
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Avg PY C
+
+PY OnLine P: Stock
+   = OnLine_P[TechnologyPlatform]*State_of_Industry_Process_Yield[TechnologyPlatform]
+   Units: project-gal/ton
+   Documentation: DEFINITION:  Part of Co-flow structure.  Captures total "weight" of process yield associated with pioneer scale plants that are on-line
+
+UNITS:  project-gal per ton
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: Avg PY P
+
+PY Pipeline C: Converter
+   = "PY_in_In_Design&Cons_C"[TechnologyPlatform] + PY_in_Startup_C[TechnologyPlatform]
+   Units: project-gal/ton
+   Documentation: DEFINITION: Tracks process yield for commercial-scale operations that are in design, construction, or startup
+ 
+UNITS: project-gal/ton
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS:
+   Used by: Avg PY Pipeline C
+
+PY Pipeline P: Converter
+   = "PY_in_Design&Cons_P"[TechnologyPlatform] + PY_in_Startup_P[TechnologyPlatform]
+   Units: project-gal/ton
+   Documentation: DEFINITION: Tracks process yield for pioneer-scale operations that are in design, construction, or startup
+ 
+UNITS: project-gal per ton
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS:
+   Used by: Avg PY Pipeline P
+
+PY retirements C: Flow
+   = retirements_C[TechnologyPlatform]*Avg_PY_C[TechnologyPlatform]
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION: Co-flow of process yield associated with each plant that is retired
+ 
+UNITS: (gal/ton)/yr  {(plant/yr)*((gal/ton)/plant)}
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: Assuming that "avg" process yield is what is retired
+
+PY retirements P: Flow
+   = retirements_P[TechnologyPlatform]*Avg_PY_P[TechnologyPlatform]
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Co-flow structure that tracks movement of process yield associated with retirement of on-line facilities
+
+UNITS:  gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+
+PY startup to OnLine C: Flow
+   = 0
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Co-flow structure that tracks movement of process yield associated with completion of start-up phase
+
+UNITS:  gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+
+COMMENTS:
+
+PY startup to OnLine P: Flow
+   = 0
+   Units: gal-project/(ton-yr)
+   Documentation: DEFINITION:  Co-flow structure that tracks movement of process yield associated with completion of start-up phase
+
+UNITS:  gal-projects/ton-yr
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+
+COMMENTS:
+
+RAT C: Converter
+   = attractiveness_C[TechnologyPlatform]/Total_Attr
+   Units: Unitless
+   Documentation: DEFINITION: Calculates relative attractiveness of different commercial conversion options
+
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: share to C
+
+RAT P: Converter
+   = 
+attractiveness_P[TechnologyPlatform] / Total_Attr
+   Units: Unitless
+   Documentation: DEFINITION: Calculates relative attractiveness of different pioneer conversion options
+
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: share to P
+
+rate of doubling demo experience: Flow
+   = (frac_rate_of_growth_demo_experience[TechnologyPlatform])/doubling_factor
+   Units: doubling/yr
+   Documentation: Definition: Translates fractional rate of growth in experience to yearly rate of doubling.  Rate of doubling drives learning logic.
+
+Units: doubling/yr
+
+Type:  internal calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: demo learning logic
+
+rate of doubling industry output by technology: Flow
+   = frac_rate_of_growth_in_industry_output[TechnologyPlatform]/doubling_factor
+   Units: doubling/yr
+   Documentation: Definition: Translates fractional rate of growth industry production (by technology) to yearly rate of doubling.  Rate of doubling drives learning logic.
+
+Units: doubling/yr
+
+Type:  internal calculation
+
+Source:  N/A
+
+Comments:  
+
+   Used by: learning logic
+
+rate of doubling pilot experience: Flow
+   = frac_rate_of_growth_pilot_experience[TechnologyPlatform]/doubling_factor
+   Units: doubling/yr
+   Documentation: Definition: Translates fractional rate of growth in experience to yearly rate of doubling.  Rate of doubling drives learning logic.
+
+Units: doubling/yr
+
+Type:  internal calculation
+
+Source:  N/A 
+
+Comments:  
+
+   Used by: pilot learning logic
+
+rate of industry process yield adjustment: Converter
+   = 1
+   Units: Per Year
+   Documentation: DEFINITION: fractional rate of incorporation of state of art knowledge into existing plants in industry
+ 
+UNITS: 1/time
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS:  Currently applies only to commercial-scale plants
+   Used by: increase in PY commercial industry
+
+Req'd Annual FS Supply by Tech by Region: Converter
+   = Reqd_Annual_FS_Supply_C[TechnologyPlatform] + Reqd_Annual_FS_Supply_P[TechnologyPlatform]
+   Units: ton per year
+   Documentation: DEFINITION: required feedstock supply to support "in place" pioneer + commercial scale operations at current utilization rates
+ 
+UNITS: ton/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Total Annual Req'd Cellulosic FS
+
+Req'd Rate of Return: Converter
+   = "Req'd_Rate_of_Return_as_%"[TechnologyPlatform]/"one_hundred_%"
+   Units: Per Year
+   Documentation: DEFINITION: Project rate of return required to stimulate investment in a project, given current state of industry, expressed as a fraction 
+ 
+UNITS: 1/yr
+ 
+TYPE: Internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+ 
+
+   Used by: discount factor DCS C, discount factor 3 C, discount factor 2 C, discount factor loan C, discount factor 1 C, discount factor 2 P, discount factor 1 P, discount factor DCS P, discount factor 3 P, discount factor loan P
+
+Req'd Rate of Return as %: Converter
+   = "Mature_Industry_Rate_of_Return_as_%"*State_of_the_Industry_Multipliers[TechnologyPlatform,Risk]
+   Units: percent/yr
+   Documentation: DEFINITION: Project rate of return required to stimulate investment in a project, given current state of industry 
+ 
+UNITS: %/yr
+ 
+TYPE: Internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+ 
+
+   Used by: Req'd Rate of Return
+
+Reqd Annual FS Supply C: Converter
+   = IF Output_Capacity_C[TechnologyPlatform] > 0 THEN
+(Output_Capacity_C[TechnologyPlatform] / Avg_PY_C[TechnologyPlatform]) * 
+Nominal_Plant_Utilization_Factors_C[TechnologyPlatform]
+ELSE 0
+   Units: ton per year
+   Documentation: DEFINITION: required feedstock supply to support "in place" commercial scale operations at current utilization rates 
+ 
+UNITS: ton/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Req'd Annual FS Supply by Tech by Region
+
+Reqd Annual FS Supply P: Converter
+   = IF Output_Capacity_P[TechnologyPlatform] > 0 THEN
+(Output_Capacity_P[TechnologyPlatform] / Avg_PY_P[TechnologyPlatform]) * Nominal_Plant_Utilization_Factors_P[TechnologyPlatform]
+ELSE 0
+   Units: ton per year
+   Documentation: DEFINITION: required feedstock supply to support "in place" pioneer scale operations at current utilization rates
+ 
+UNITS: ton/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: relevant for full supply chain models
+   Used by: Req'd Annual FS Supply by Tech by Region
+
+Reqd FS supply Pipeline: Converter
+   = (Reqd_FS_supply_Pipeline_C[TechnologyPlatform] + Reqd_FS_supply_Pipeline_P[TechnologyPlatform])
+   Units: ton per year
+   Documentation: DEFINITION: required feedstock supply to support "pipeline" pioneer + commercial scale operations at full utilization rates
+ 
+UNITS: ton/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Total Annual Reqd FS Pipeline
+
+Reqd FS supply Pipeline C: Converter
+   = Pipeline_C[TechnologyPlatform] * FS_throughput_C[TechnologyPlatform] * Days_per_Year_Online /one_project
+   Units: ton per year
+   Documentation: DEFINITION: required feedstock supply to support "ipipeline" commercial scale operations at full utilization rates
+ 
+UNITS: ton/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Reqd FS supply Pipeline
+
+Reqd FS supply Pipeline P: Converter
+   = Pipeline_P[TechnologyPlatform] * FS_throughput_P[TechnologyPlatform] * Days_per_Year_Online /one_project
+   Units: ton per year
+   Documentation: DEFINITION: required feedstock supply to support "pipeline" pioneer scale operations at full utilization rates
+ 
+UNITS: ton/yr
+ 
+TYPE:  internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Reqd FS supply Pipeline
+
+Retirement Fraction C: Converter
+   = 
+   Units: Per Year
+   Documentation: DEFINITION: Fraction of commercial scale plants retiring per year
+ 
+UNITS: 1/yr
+ 
+TYPE: Ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: retirement fraction = 0 implies 0 plant retirement over simulation horizon.
+ 
+
+
+   Used by: retirements C, Retirement Fraction P
+
+Retirement Fraction P: Converter
+   = Retirement_Fraction_C[TechnologyPlatform]
+   Units: Per Year
+   Documentation: DEFINITION: fraction per year retirement of plants
+ 
+UNITS: 1/yr
+ 
+TYPE: ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: retirement fraction = 0 implies 0 plant retirement over simulation horizon.
+   Used by: retirements P
+
+retirements C: Flow
+   = OnLine_C[TechnologyPlatform]*Retirement_Fraction_C[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION:  Captures (continuous) retirement of plants at the end of their productive lifetime
+
+UNITS:  Projects/year
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+
+COMMENTS:  Retirement fraction currently set to 0.
+   Used by: PY retirements C
+
+retirements P: Flow
+   = OnLine_P[TechnologyPlatform]*Retirement_Fraction_P[TechnologyPlatform]
+   Units: project/yr
+   Documentation: DEFINITION:  Captures (continuous) retirement of plants at the end of their productive lifetime
+
+UNITS:  Projects/year
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:  Retirement fraction set to 0 in default case.
+
+   Used by: PY retirements P
+
+rollup annual subsidies: Converter
+   = SUM(yrly_FCI_subs_C) + SUM(yrly_FCI_subs_P) + SUM(yrly_fs_subs_C) + SUM(yrly_fs_subs_P) + SUM(yrly_prodn_subs)
+   Units: US dollars per year
+   Documentation:  DEFINITION:  total annual subsidy across all subsidy categories and technologies.
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+
+rollup cumulative subsidies: Converter
+   = SUM(Cume_Prodn_Subs) + SUM(Cume_FCI_Subs) + SUM(Cume_FS_Subs)
+   Units: US Dollars
+   Documentation:  DEFINITION:  total of cumulative subsidies across all subsidy categories and technologies.
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+
+Rollup Loan Expsure: Converter
+   = SUM(Cume_Loan_Guarantee_Exposure)
+   Units: US Dollars
+   Documentation:  DEFINITION:  Calculates cumulative loan guarantee exposure associated with investment in conversion (both pioneer and full commercial scale) facilities, across technologies
+ 
+UNITS: USD
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+
+Rough Estimate Annual Interest: Converter
+   = Cume_Interest_Payment_C[TechnologyPlatform]/term_of_loan
+   Units: US dollars per year
+   Documentation: DEFINITION: Avg amount of interest paid per year over life of loan 
+
+UNITS:  USD per year
+
+TYPE: internal calculation
+
+SOURCE: 
+
+COMMENT: Assumes linear payment of interest--simplification to facilitate use of annuity calculations to capture NPV for project
+
+   Used by: Expected Taxable Income 2 C, Expected Taxable Income 1 C
+
+Rough Estimate Annual Interest P: Converter
+   = Cume_Interest_Payment_P[TechnologyPlatform]/term_of_loan
+   Units: US dollars per year
+   Documentation: DEFINITION: Avg amount of interest paid per year over life of loan
+
+UNITS:  USD per year
+
+TYPE: internal calculation
+
+SOURCE: 
+
+COMMENT: Assumes linear payment of interest--simplification to facilitate use of annuity calculations to capture NPV for project
+
+   Used by: Expected Taxable Income 2 P, Expected Taxable Income 1 P
+
+share OTHER: Converter
+   = attr_OTHER/Total_Attr
+   Units: Unitless
+   Documentation: DEFINITION: Allocates a portion of the plant construction capacity to stuff other than the three technologies in consideration in this model
+
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: share to A B and C
+
+share to A B and C: Converter
+   = 1-share_OTHER
+   Units: Unitless
+   Documentation: DEFINITION: summary stat indicating the fraction of construction capacity allocated to  construction of technologies A, B, and C.
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+share to C: Converter
+   = RAT_C[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: Allocates a portion of the plant construction capacity to commercial  plants  by technology
+
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: desired c starts per year
+
+share to P: Converter
+   = RAT_P[TechnologyPlatform]
+   Units: Unitless
+   Documentation: DEFINITION: Allocates a portion of the plant construction capacity to pioneer plants  by technology
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: desired p starts per yr
+
+Starting Up C: Stock
+   = 
+   Units: Project
+   Documentation: DEFINITION:  Conveyor that tracks full commercial scale operations in startup  stages, by technology
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: Plants On Line Equivalent C, Pipeline C
+
+Starting Up P: Stock
+   = 
+   Units: Project
+   Documentation: DEFINITION:  Conveyor that tracks pioneer scale operations in startup  stages, by technology
+
+UNITS:  Projects
+
+TYPE:  Internal Calculation
+
+SOURCE:  N/A
+
+COMMENTS:
+
+   Used by: Pipeline P
+
+Startup Subs: Converter
+   = 
+   Units: Unitless
+   Documentation: DEFINITION: Arrayed set of Startup subiidies, accruing to producers as long as switch is on and we are within the start/end time constraints AND cumulative production is within the window defined by the Cumulative Model Output relative to the Threshold)
+
+UNITS: Unitless
+
+TYPE: Input
+
+SOURCE: n/a
+
+Comments:  Note that there are multiple concepts represented in this array.  Units are set to unitless--inplying a dimensionless multiplier.  Specific units are developed in the Subs Logic equations.
+
+[2.65 ,
+0, 
+0, 
+0.6,
+0,
+0.7,
+0.7]
+   Used by: Subsidy Amt
+
+Startup Subs Vol Thresh: Converter
+   = 1
+   Units: billions-gal
+   Documentation: Definition:   Sets  threshold for cumulative product output, rolled up across technology, over the course of the simulation.  When cumulative output for this module exceeds the threshold, conversion subsidies shift from their "startup" value to their "baseline" value
+
+Units:  billions-gal (gal * 1e9)
+
+Type:  Internal calculation
+
+Source:  N/A
+
+Comments:  
+   Used by: Use Startup Subs
+
+State of Industry Process Yield: Converter
+   = Mature_Industry_Process_Yield[TechnologyPlatform]*State_of_the_Industry_Multipliers[TechnologyPlatform,ProcessYield] * Yield_Multiplier
+   Units: gal per ton
+   Documentation: DEFINITION:  Calculates expected process yield for "next" plant by technology, thus reflecting current state of technology
+
+UNITS:  gal/ton
+
+TYPE:  Internal Calculation for this sector
+
+SOURCE:  
+
+COMMENT:  Dynamic conversion yield is driven by learning curve dynamics
+
+   Used by: PY influx P, Industry Process Yield Gap, Expected Pioneer Plant Output Gal per Day, PY influx C, Expected Plant Output Gal per Day C, FS Cost USD per gal Pioneer, FS Cost USD per gal C
+
+State of the Industry Multipliers: Converter
+   = Mature_Commercial_Multipliers[TechAttribute]*Commercial_Maturity[TechnologyPlatform] +
+Demo_Multipliers[TechnologyPlatform,TechAttribute]*(1-Commercial_Maturity[TechnologyPlatform])
+   Units: Unitless
+   Documentation: Definition: Set of multipliers describing maturity for technical attributes, for each represented technology.  Multipliers gravitate toward value of 1 as industry matures.  Multipliers are calculated as weighted avg of mature industry vs demo industry.  dynamic weighting factor is given by indices of commercial maturity.
+
+Units: Unitless
+
+Type:  Internal Calculation
+
+Source:  N/A
+
+Comments:  
+
+
+   Used by: State of Industry Process Yield, Expected Equity Fraction, Expected FCI C, Req'd Rate of Return as %, FS throughput C, P Success, FS throughput P, Expected FCI P
+
+Subsidy Amt: Converter
+   = Startup_Subs[ConversionPolicy] * Use_Startup_Subs[ConversionPolicy] +
+Background_Subs[ConversionPolicy] * (1-Use_Startup_Subs[ConversionPolicy])
+   Units: Unitless
+   Documentation: Definition:   Determines conversion amount for each policy based on whether policy is in startup or baseline mode. 
+
+Units:  unitless
+
+Type:  Internal calculation
+
+Source:  N/A
+
+Comments:  Note that there are multiple concepts represented in this array.  Units are set to unitless--inplying a dimensionless multiplier.  Specific units are developed in the Subs Logic equations.
+   Used by: PoP Price Subs Logic, FS Subs Logic P, FS Subs Logic C, FCI Subs Logic P, FCI Subs Logic C, Loan Guarantee Logic P, Loan Guarantee Logic C
+
+tech breakthru logic: Converter
+   = PULSE(commercial_maturity_gap[TechnologyPlatform] * breakthru_frac *breakthru_switch[TechnologyPlatform],breakthru_time[TechnologyPlatform],1e9)
+   Units: Per Year
+   Documentation: Definition: Logic driving exogenously specified "breakthrough" that removes some fraction of the commercial maturity gap in 2020
+
+Units:  1/yr
+
+Type:  internal calculation
+
+Source:  N/A
+
+Comments:  Placed in model for testing purposes
+
+   Used by: learning logic
+
+technology switches: Converter
+   = 1
+   Units: Unitless
+   Documentation: Definition: Set of switches that enable analysis of arbitrary set of technologies
+
+Units: Unitless
+
+Type:  User-Defined Input
+
+Source:  n/a
+
+Comments:  Default is for all switches to be active
+
+
+   Used by: initiating pilot development, initiating demo development
+
+term of loan: Converter
+   = 10
+   Units: years
+   Documentation: DEFINITION: Length of project loan 
+
+UNITS:  yr
+
+TYPE: Constant
+
+SOURCE: assumption
+
+COMMENT: Loan assumed to be paid back over loan term, beginning when start-up is complete
+   Used by: Cume Loan Payment C, Rough Estimate Annual Interest, Expected Taxable Income 2 C, discount factor Loan Payment C, discount factor loan C, length of period 1 C, length of period 2 C, length of period 1 P, length of period 2 P, discount factor loan P, Cume Loan Payment P, Rough Estimate Annual Interest P, Expected Taxable Income 2 P, discount factor Loan Payment P
+
+Tot C Cellulosic Cap by Tech by Region: Converter
+   =  (Output_Capacity_C[TechnologyPlatform] + Output_Capacity_Pipeline_C[TechnologyPlatform])
+   Units: GPY
+   Documentation: DEFINITION:total commercial scale cellulosic etoh capacity incl pipeline
+ 
+UNITS: GPY
+ 
+TYPE: sector/module interface
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+Tot P Cap by Tech by Region: Converter
+   =  (Output_Capacity_P[TechnologyPlatform] + Output_Capacity_Pipeline_P[TechnologyPlatform] )
+   Units: GPY
+   Documentation: DEFINITION:total pioneer scale production capacity incl pipeline for pioneer scale facilities
+ 
+UNITS: GPY
+ 
+TYPE: sector/module interface
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+Total Annual Req'd Cellulosic FS: Converter
+   = (Req'd_Annual_FS_Supply_by_Tech_by_Region[TechnologyPlatform]) / one_million
+   Units: million-ton/yr
+   Documentation: DEFINITION: required cellulosic feedstock per yr by region to support in place prod'n capacity 
+ 
+UNITS: million tons/year
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: actual fs demand at nominal utilization
+
+Total Annual Reqd FS Pipeline: Converter
+   = (Reqd_FS_supply_Pipeline[TechnologyPlatform] ) / one_million
+   Units: million-ton/yr
+   Documentation: DEFINITION: required feedstock supply to support "pipeline" pioneer + commercial scale operations at full utilization rates
+ 
+UNITS: million ton/yr
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: fs demand incl pipeline
+
+Total Attr: Converter
+   = Total_Attr_C+Total_Attr_P+attr_OTHER
+   Units: Unitless
+   Documentation: DEFINITION: rollup of attractiveness across all uses of plant construction capacity
+
+UNITS: attractiveness units
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: share OTHER, RAT C, RAT P
+
+Total Attr C: Converter
+   = SUM(attractiveness_C)
+   Units: Unitless
+   Documentation: DEFINITION: Rollup ofattractiveness of investment in full commercial scale plants across technology
+
+UNITS: attractiveness units
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Total Attr
+
+Total Attr P: Converter
+   = SUM(attractiveness_P)
+   Units: Unitless
+   Documentation: DEFINITION: attractiveness of investment in pioneer scale plants, rolled up across conversion options
+
+UNITS: attractiveness units
+ 
+TYPE: Internal Calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: Total Attr
+
+Total Exp Revs C: Converter
+   = Exp_Sales_Rev_C[TechnologyPlatform]+Exp_Power_Sales_Rev_C[TechnologyPlatform]+Exp_Other_Coproduct_Sales_Rev_C[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected revenues for "next" commercial-scale plant
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant revs over plant lifetime, once operational. 
+
+   Used by: Exp Revs Net of Op Cost
+
+Total Expected Revs Pioneer: Converter
+   = Expected_Sales_Rev_Pioneer[TechnologyPlatform]+Expected_Power_Sales_Rev_P[TechnologyPlatform]+Expected_Other_Coproduct_Sales_Rev_P[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation: DEFINITION: Calculates expected revenues for Pioneer-scale plant when plant is fullly operational
+
+UNITS:  USD per year
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT: Downstream NPV calculation assumes constant revs over plant lifetime, once operational. 
+
+
+
+   Used by: Expected Revs Net of Op Cost P
+
+total project length C: Converter
+   = years_in_D_C_S_C[TechnologyPlatform]+Plant_Economic_Lifetime
+   Units: years
+   Documentation: DEFINITION: Total length of commercial project, including Design/Construction/Startup and expected plant lifetime once operationall
+
+UNITS:  years
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT:
+
+   Used by: discount factor 3 C
+
+total project length P: Converter
+   = years_in_D_C_S_P[TechnologyPlatform]+Plant_Economic_Lifetime
+   Units: years
+   Documentation: DEFINITION: Total length of project, including Design/Construction/Startup and expected plant lifetime once operational 
+
+UNITS:  yr
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT:
+
+   Used by: discount factor 3 P
+
+use endogenous commercial logic: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: Switch that enables ENDOGENOUS start logic to play a role in system
+ 
+UNITS: unitless
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: Default value is 1.  Set to 0 to explore implications of exogenous scenarios only.
+   Used by: c plant planning logic, pioneer plant planning logic
+
+use exogenous commercial scenario: Converter
+   = 1
+   Units: Unitless
+   Documentation: DEFINITION: Switch that enables exogenously specified start scenarios to be injected into system
+ 
+UNITS: unitless
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: Set to 1 to turn enable pioneer start and commercial start scenarios to accumulate in the system.
+   Used by: c plant planning logic, pioneer plant planning logic
+
+Use Startup Subs: Converter
+   = IF Cumulative_Module_Output <= Startup_Subs_Vol_Thresh[ConversionPolicy] THEN 1 ELSE 0
+   Units: Unitless
+   Documentation: Definition:   0/1 switch that drives shift of conversion subsidies shift from their "startup" value to their "baseline" value.  When this eq'n returns a 1, the policy is in startup mode.  When it returns a 0, the policy is in baseline mode.  Note that this is arrayed by conversion policy
+
+Units:  unitless
+
+Type:  Internal calculation
+
+Source:  N/A
+
+Comments:  
+   Used by: Subsidy Amt
+
+UTIL by tech: Converter
+   = IF Output_cap_by_Tech[TechnologyPlatform] > 0 THEN
+100 * Output_gpy_by_Technology[TechnologyPlatform]/Output_cap_by_Tech[TechnologyPlatform]
+ELSE 0
+   Units: Unitless
+   Documentation: DEFINITION: Calculates utilization for the platform, across regions
+
+UNITS: unitless
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: 
+
+UTIL by tech C: Converter
+   = IF (Output_Capacity_C[TechnologyPlatform]) > 0 THEN
+100 * (Actual_Output_gpy_C[TechnologyPlatform])/(Output_Capacity_C[TechnologyPlatform])
+ELSE 0
+   Units: Unitless
+   Documentation: DEFINITION: Calculates utilization for the platform, across regions
+
+UNITS: unitless
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: This structure is relevant for regionalized version of model but redundant in the simpler learning model.
+
+UTIL by tech P: Converter
+   = IF (Output_Capacity_P[TechnologyPlatform]) > 0 THEN
+100 * (Actual_Output_gpy_P[TechnologyPlatform])/(Output_Capacity_P[TechnologyPlatform])
+ELSE 0
+   Units: Unitless
+   Documentation: DEFINITION: Calculates utilization for the platform, across regions
+
+UNITS: unitless
+ 
+TYPE: internal calculation
+ 
+SOURCE: 
+ 
+COMMENTS: This structure is relevant for regionalized version of model but redundant in the simpler learning model.
+
+Util rate for starting up: Converter
+   = 0.5
+   Units: Unitless
+   Documentation: DEFINITION: Utiliation fraction for start-up commercial-scale plants
+ 
+UNITS: dimensionless fraction
+ 
+TYPE: 
+ 
+SOURCE: assumed
+ 
+COMMENTS: 
+
+   Used by: Plants On Line Equivalent C
+
+years in D C S C: Converter
+   = "Years_in_D&C_C"[TechnologyPlatform]+Years_in_Startup_C
+   Units: years
+   Documentation: DEFINITION: Total expected time that project is in Design/Construction/Startup (yrs)
+
+Units:  years
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT:
+   Used by: total project length C, discount factor DCS C, discount factor loan C, length of period 1 C, length of period 2 C
+
+years in D C S P: Converter
+   = "Years_in_D&C_P"[TechnologyPlatform]+Years_in_Startup_P
+   Units: years
+   Documentation: DEFINITION: Total expected time that project is in Design/Construction/Startup 
+
+UNITS:  years
+
+TYPE: Internal Calculation for this sector
+
+SOURCE: N/A
+
+COMMENT:
+   Used by: total project length P, discount factor DCS P, length of period 1 P, length of period 2 P, discount factor loan P
+
+Years in D&C C: Converter
+   = 3
+   Units: years
+   Documentation: DEFINITION: Assumed time in design and construction for commercial-scale plant
+ 
+UNITS: yr
+ 
+TYPE: Ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: 
+ 
+
+   Used by: years in D C S C, Years in D&C P
+
+Years in D&C P: Converter
+   = "Years_in_D&C_C"[TechnologyPlatform]
+   Units: years
+   Documentation: DEFINITION: Dwell time for design and construction of pioneer-scale plants
+ 
+UNITS: yr
+ 
+TYPE: 
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: years in D C S P
+
+Years in Startup C: Converter
+   = 0.25
+   Units: years
+   Documentation: DEFINITION: Assumed time to do start-up for commercial-scale plant
+ 
+UNITS: yr
+ 
+TYPE: Ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: 
+ 
+
+   Used by: years in D C S C, Years in Startup P
+
+Years in Startup P: Converter
+   = Years_in_Startup_C
+   Units: years
+   Documentation: DEFINITION: Start-up time for pioneer-scale plants
+ 
+UNITS: yr
+ 
+TYPE: ass'n
+ 
+SOURCE: 
+ 
+COMMENTS: 
+   Used by: years in D C S P
+
+Yield Input: Converter
+   = 
+   Units: Unitless
+   Used by: Yield Multiplier
+
+Yield Multiplier: Converter
+   = Yield_Input
+   Units: Unitless
+   Documentation: Definition:   conversion factor used to set subsidies to correct units.
+
+Units:  USD/gal
+
+Type:  conversion factor
+
+Source:  N/A
+
+Comments:  
+   Used by: State of Industry Process Yield
+
+yrly FCI subs C: Flow
+   = commercial_plant_initiation_logic[TechnologyPlatform] * FCI_Subs_Logic_C[TechnologyPlatform] / one_project
+   Units: US dollars per year
+   Documentation:  DEFINITION:  flow of fixed capital investment subsidy accruing to full commercial scale conversion facilities, by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup annual subsidies
+
+yrly FCI subs P: Flow
+   = pioneer_plant_initiation_logic[TechnologyPlatform] * FCI_Subs_Logic_P[TechnologyPlatform] / one_project
+   Units: US dollars per year
+   Documentation:  DEFINITION:  Flow of fixed capital investment subsidy accruing to pioneer conversion facilities, by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup annual subsidies
+
+yrly fs subs C: Flow
+   = C_industry_FS_thruput_tpy[TechnologyPlatform] * FS_Subs_Logic_C[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation:  DEFINITION:  flow of feedstock subsidy accruing to full commercial scale conversion facilities, by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup annual subsidies
+
+yrly fs subs P: Flow
+   = P_industry_FS_thruput_tpy[TechnologyPlatform] * FS_Subs_Logic_P[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation:  DEFINITION:  flow of annual feedstock subsidy accruing to pioneer conversion facilities, by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup annual subsidies
+
+yrly Loan guarantee flux C: Flow
+   = commercial_plant_initiation_logic[TechnologyPlatform] * (per_plant_L_G_exposure_C[TechnologyPlatform] / one_project)
+   Units: US dollars per year
+   Documentation:  DEFINITION:  Annual loan guarantee exposure associated with investment in  full commercial scale conversion facilities, by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+
+yrly Loan Guarantee Flux P: Flow
+   = pioneer_plant_initiation_logic[TechnologyPlatform] * (per_plant_L_G_esposure_P[TechnologyPlatform] / one_project)
+   Units: US dollars per year
+   Documentation:  DEFINITION:  annual  loan guarantee exposure associated with investment in pioneer scale conversion facilities, by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+
+yrly prodn subs: Flow
+   = Output_gpy_by_Technology[TechnologyPlatform] * PoP_Price_Subs_Logic[TechnologyPlatform]
+   Units: US dollars per year
+   Documentation:  DEFINITION:  flow of annual conversion production subsidy by technology
+ 
+UNITS: USD/yr
+ 
+TYPE: Internal Calculation
+ 
+SOURCE:  
+ 
+COMMENTS: 
+   Used by: rollup annual subsidies
+
